@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Decorators · Dungeon Hopper</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Overview"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Decorators · Dungeon Hopper"/><meta property="og:type" content="website"/><meta property="og:url" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/"/><meta property="og:description" content="## Overview"/><meta property="og:image" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/Dungeon-Hopper-Docs/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/Dungeon-Hopper-Docs/js/scrollSpy.js"></script><link rel="stylesheet" href="/Dungeon-Hopper-Docs/css/main.css"/><script src="/Dungeon-Hopper-Docs/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/Dungeon-Hopper-Docs/"><img class="logo" src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper"/><h2 class="headerTitleWithLogo">Dungeon Hopper</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/Dungeon-Hopper-Docs/docs/start" target="_self">Docs</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Topics</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Getting Started</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/start">What is this?</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Terminology And Basics</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/chains">Chains and Chain Templates</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/vocab">Calling Conventions</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Topics</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/decorators">Decorators</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/action">Action</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/algos">Algorithms</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/movs">Movs Algorithms</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/sequence">Sequence</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/modifiers">Modifiers</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Decorators</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="overview"></a><a href="#overview" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
+<p>Decorators are used extensively throughout the project. They act pretty much like individual components that are used to augment your entity <strong>classes</strong>. They are <strong>not dynamic</strong>, that is, they <em>cannot</em> be added on already instantiated objects. Nevertheless, the chains they add <em>are</em> dynamic and can be modified at any time.</p>
+<h3><a class="anchor" aria-hidden="true" id="some-new-terminology-on-methods"></a><a href="#some-new-terminology-on-methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Some new terminology on methods:</h3>
+<ol>
+<li><code>be&lt;Something&gt;</code> methods refer to applying that something on the object after a series of checks that are able to interfere with that, not allowing the effects. For example, <code>beAttacked</code> does the attack after going through a series of handlers, e.g. blocking some of the damage, or stopping the event from propagating completely, e.g. by being invincible.</li>
+<li><code>do&lt;Something&gt;</code> methods refer to applying the action on a previously unknown object. For example, <code>doAttack</code> method on <code>World</code> calculates which entity is going to be targeted and calls <code>beAttacked</code> on that enemy.</li>
+<li><code>apply&lt;Something&gt;</code> methods refer to those methods which call <code>do&lt;Something&gt;</code> on <code>World</code>.</li>
+<li><code>execute&lt;Something&gt;</code> is the same as the first one, except it is that object that does the action, that is, it is not the subject of the action. Foe example, <code>executeAttack</code>.</li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="how-to-use-the-decorators"></a><a href="#how-to-use-the-decorators" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How to use the decorators</h3>
+<p>Assume you have an entity class you'd like to decorate. For that, just do the following:</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> Decorators = <span class="hljs-built_in">require</span> <span class="hljs-string">"logic.decorators.decorators"</span>
+<span class="hljs-keyword">local</span> Decorator = <span class="hljs-built_in">require</span> <span class="hljs-string">"logic.decorators.decorator"</span>
+Decorators.Start(MyEntity)                 <span class="hljs-comment">-- create the chain template on that object</span>
+Decorator.decorate(MyEntity, MyDecorator)  <span class="hljs-comment">-- add stuff to that template, add stuff to your entity</span>
+</code></pre>
+<blockquote>
+<p>NOTE: You cannot decorate instances! You can apply the decorators only to classes!
+So, in order to, e.g., stop your entities from taking damage while they are in some phase of their lifecycle, use some other logic, e.g. adding handlers to chains.
+In our example, this would mean stopping event from propagating in <code>myEntity.chains.defence</code> chain by adding a nullifier handler to it</p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="what-do-decorators-do"></a><a href="#what-do-decorators-do" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>What do decorators do?</h3>
+<p>In short, Decorators add particular behaviour to your classes.</p>
+<p>They all share these 3 basic stages</p>
+<h4><a class="anchor" aria-hidden="true" id="decoration"></a><a href="#decoration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>Decoration</em></h4>
+<p>This is the moment the <code>Decorator.decorate</code> method is called. It works by taking the list of <code>affectedChains</code> from the decorator class and adding them to the <code>chainTemplate</code> of your entity class.</p>
+<p>For example, such chains would create a chain named <code>myCheck</code> on the entity class's <code>chainTemplate</code> and add the handlers <code>checkHandler1</code> and <code>checkHandler2</code> onto it. After that, it would create the chain <code>myExecute</code>, adding just the <code>executeHandler1</code> to it and, finally, it would just create the new <code>myEmpty</code> chain on the <code>chainTemplate</code>, without adding any handler onto it.:</p>
+<pre><code class="hljs css language-lua">MyDecorator.affectedChains = {
+    { <span class="hljs-string">'myCheck'</span>,   { checkHandler1, checkHandler2 } },
+    { <span class="hljs-string">'myExecute'</span>, { executeHandler1 }              },
+    { <span class="hljs-string">'myEmpty'</span>,   {}                               }
+}
+</code></pre>
+<p>The decorator also gets pushed to the <code>myEntityClass.decoratorsList</code> for the further initialization stage.</p>
+<h4><a class="anchor" aria-hidden="true" id="initialization"></a><a href="#initialization" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>Initialization</em></h4>
+<p>The initialization stage takes place when your entity class is being instantiated. At this time, all Decorators saved on <code>myEntityClass.decoratorsList</code> are getting instantiated and their <code>myDecorator:__construct()</code> methods called. This is the moment they should instantiate things on the instance, if they need to.</p>
+<h4><a class="anchor" aria-hidden="true" id="activation"></a><a href="#activation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>Activation</em></h4>
+<p><em>Activation</em> as such implies the decorator's method <code>myDecorator:activate()</code> getting called. Typically, it would have the instance as the first parameter.</p>
+<p>A fair amount of predefined decorators use the <strong>checkApplyCycle</strong> as their activation. The idea is straightforward: they would do a pass over their <code>check</code> chain and, if it were successful, that is, if it went through all its handlers without getting interrupted, the <code>do</code> chain is going to be passed too. Otherwise, it wouldn't. See <em>logic.decorators.utils</em>.</p>
+<p>For example, take <code>Decorators.Attacking</code>. It adds two chains: <code>getAttack</code>, which is the <code>check</code> (or <code>get</code>) chain, and <code>attack</code>, which is the <code>do</code> chain.</p>
+<h2><a class="anchor" aria-hidden="true" id="list-of-basic-decorators"></a><a href="#list-of-basic-decorators" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>List of basic decorators</h2>
+<h3><a class="anchor" aria-hidden="true" id="start"></a><a href="#start" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Start</code></h3>
+<p>Adds the <em>chainTemplate</em> and <em>decoratorsList</em> to your Entity class.</p>
+<blockquote>
+<p>This is technically not a decorator, but just an ordinary function.</p>
+</blockquote>
+<blockquote>
+<p>You must call this first if you want your next decorators to work at all.</p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="acting"></a><a href="#acting" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Acting</code></h3>
+<p>Enables the entity to apply action that were saved as <code>Entity.nextAction</code> during the <code>computeAction</code> beat stage.</p>
+<table>
+<thead>
+<tr><th>Added chain</th><th>Automatically added handlers</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>checkAction</code></td><td>-</td><td>TODO</td></tr>
+<tr><td><code>action</code></td><td>-</td><td>contains the action algorithm(s)</td></tr>
+<tr><td><code>failAction</code></td><td>-</td><td>traversed if no action succeeded</td></tr>
+<tr><td><code>succeedAction</code></td><td>-</td><td>traversed if an action succeeded</td></tr>
+</tbody>
+</table>
+<p><strong>Shorthand activation</strong>: <code>Entity.executeAction()</code></p>
+<h3><a class="anchor" aria-hidden="true" id="attackable"></a><a href="#attackable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Attackable</code></h3>
+<p>This decorator enables the entity to take normal hits.</p>
+<table>
+<thead>
+<tr><th>Added chain</th><th>Automatically added handlers</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>defence</code></td><td>Reduction by base armor</td><td>This chain is traversed when your entity is about to take damage. These methods mild or amplify effects of the attack.</td></tr>
+<tr><td><code>beHit</code></td><td><code>takeHit</code>, <code>die</code></td><td>Handlers of this chain are traversed after a hit has been assured to come through by the <code>defence</code> chain.</td></tr>
+</tbody>
+</table>
+<p><code>takeHit</code> does damage to you (without applying status effects and pushing, see <code>Pushable</code> and <code>Statused</code> for that).</p>
+<blockquote>
+<p><code>Entity.takeHit()</code> is the shorthand for <code>Entity.decorators.WithHP.activate()</code></p>
+</blockquote>
+<p><code>die</code> checks if the health is 0 and calls the <code>Entity.die()</code> if it is.</p>
+<blockquote>
+<p><code>Entity.die()</code> is the shorthand for <code>Entity.decorators.Killable.activate()</code></p>
+</blockquote>
+<p><strong>Shorthand activation</strong>: <code>Entity.beAttacked()</code></p>
+<h3><a class="anchor" aria-hidden="true" id="attacking"></a><a href="#attacking" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Attacking</code></h3>
+<p>This decorator enables the entity to do normal hits.</p>
+<table>
+<thead>
+<tr><th>Added chain</th><th>Automatically added handlers</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>getAttack</code></td><td><code>setBase</code>, <code>getTargets</code></td><td>Used for creating the Attack object and modifying it with e.g. more damage</td></tr>
+<tr><td><code>attack</code></td><td><code>applyAttack</code>, <code>applyPush</code>, <code>applyStatus</code></td><td>Used for doing the Attack and applying push and the related status effects</td></tr>
+</tbody>
+</table>
+<p><strong>Shorthand activation</strong>: <code>Entity.executeAttack()</code></p>
+<h3><a class="anchor" aria-hidden="true" id="attackableonlywhennexttoattacker"></a><a href="#attackableonlywhennexttoattacker" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>AttackableOnlyWhenNextToAttacker</code></h3>
+<p>TODO: THIS ONE IS QUESTIONABLE AND WILL BE REMOVED</p>
+<h3><a class="anchor" aria-hidden="true" id="bumping"></a><a href="#bumping" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Bumping</code></h3>
+<table>
+<thead>
+<tr><th>Added chain</th><th>Automatically added handlers</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>failAction</code></td><td><code>bump</code></td><td></td></tr>
+</tbody>
+</table>
+<h3><a class="anchor" aria-hidden="true" id="explodable"></a><a href="#explodable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Explodable</code></h3>
+<p>Enables the entity to be exploded</p>
+<h3><a class="anchor" aria-hidden="true" id="invincibleafterhit"></a><a href="#invincibleafterhit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>InvincibleAfterHit</code></h3>
+<p>Makes the entity invincible for 2 loop after it's taken a hit</p>
+<h3><a class="anchor" aria-hidden="true" id="killable"></a><a href="#killable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Killable</code></h3>
+<table>
+<thead>
+<tr><th>Added chain</th><th>Automatically added handlers</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>checkDie</code></td><td>-</td><td></td></tr>
+<tr><td><code>die</code></td><td><code>die</code></td><td>sets <code>entity.dead</code> to <code>true</code> and calls <code>world:removeDead()</code></td></tr>
+</tbody>
+</table>
+<p><strong>Shorthand activation</strong>: <code>Entity.die()</code></p>
+<h3><a class="anchor" aria-hidden="true" id="moving"></a><a href="#moving" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Moving</code></h3>
+<p>Enables entity to displace.</p>
+<table>
+<thead>
+<tr><th>Added chain</th><th>Automatically added handlers</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>getMove</code></td><td><code>getBaseMove</code></td><td></td></tr>
+<tr><td><code>move</code></td><td><code>displace</code></td><td></td></tr>
+</tbody>
+</table>
+<p><strong>Shorthand activation</strong>: <code>Entity.executeMove()</code></p>
+<h3><a class="anchor" aria-hidden="true" id="playercontrol"></a><a href="#playercontrol" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>PlayerControl</code></h3>
+<p>Converts direction to an action for the player</p>
+<p><strong>Shorthand activation</strong>: <code>Player.generateAction()</code>, just for players</p>
+<h3><a class="anchor" aria-hidden="true" id="pushable"></a><a href="#pushable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Pushable</code></h3>
+<p>Enables the entity to be pushed</p>
+<table>
+<thead>
+<tr><th>Added chain</th><th>Automatically added handlers</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>checkPush</code></td><td><code>checkPush</code></td><td></td></tr>
+<tr><td><code>executePush</code></td><td><code>executePush</code></td><td></td></tr>
+</tbody>
+</table>
+<p><strong>Shorthand activation</strong>: <code>Entity.bePushed()</code></p>
+<h3><a class="anchor" aria-hidden="true" id="sequential"></a><a href="#sequential" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Sequential</code></h3>
+<p>Enables the entity to calculate their next action. Uses a <code>Sequence</code> object to keep track of the current step.</p>
+<p>The <code>Sequence</code> is instantiated and set on the entity as <code>Entity.sequence</code>.</p>
+<p><strong>Shorthand activation</strong>: <code>Entity.calculateAction()</code></p>
+<h3><a class="anchor" aria-hidden="true" id="statused"></a><a href="#statused" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Statused</code></h3>
+<p>Makes the entity vulnerable to status effects. Status effects are being frozen, stunned, on fire, poisoned and so on.</p>
+<table>
+<thead>
+<tr><th>Added chain</th><th>Automatically added handlers</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>checkStatus</code></td><td><code>checkStatus</code></td><td></td></tr>
+<tr><td><code>applyStatus</code></td><td><code>applyStatus</code></td><td></td></tr>
+</tbody>
+</table>
+<p><strong>Shorthand activation</strong>: <code>Entity.beStatused()</code></p>
+<h3><a class="anchor" aria-hidden="true" id="ticking"></a><a href="#ticking" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Ticking</code></h3>
+<p>Allows the entity to reset some fields at the <code>tick</code> phase.</p>
+<table>
+<thead>
+<tr><th>Added chain</th><th>Automatically added handlers</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>tick</code></td><td><code>resetBasic</code></td><td></td></tr>
+</tbody>
+</table>
+<p>resetBasic does:</p>
+<pre><code class="hljs css language-lua">actor.didAction = <span class="hljs-literal">false</span>
+actor.doingAction = <span class="hljs-literal">false</span>
+actor.nextAction = <span class="hljs-literal">nil</span>
+actor.enclosingEvent = <span class="hljs-literal">nil</span>
+</code></pre>
+<p>TODO: resetting of action should be done at the <code>reset</code> stage instead.</p>
+<p><strong>Shorthand activation</strong>: <code>Entity.tick()</code></p>
+<h3><a class="anchor" aria-hidden="true" id="withhp"></a><a href="#withhp" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>WithHP</code></h3>
+<p>Adds an <code>hp</code> object to the player. Makes them <code>takeDamage</code> on activation.</p>
+<p><strong>Shorthand activation</strong>: <code>Entity.takeDamage()</code></p>
+<h2><a class="anchor" aria-hidden="true" id="combos"></a><a href="#combos" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Combos</h2>
+<p>As many of the entities would use the same decorators, applying them over and over is error prone and can be simplified. This is why <code>Combos</code> exist.</p>
+<p><code>Combos</code> are essentially functions that apply a predefined set of decorators at once. For example, this:</p>
+<pre><code class="hljs css language-lua">Combos.BasicEnemy(Enemy)
+</code></pre>
+<p>would substitute this:</p>
+<pre><code class="hljs css language-lua">Decorators.Start(Enemy)
+decorate(Enemy, Decorators.Acting)
+decorate(Enemy, Decorators.Sequential)
+decorate(Enemy, Decorators.Killable)
+decorate(Enemy, Decorators.Ticking)
+decorate(Enemy, Decorators.Attackable)
+decorate(Enemy, Decorators.Attacking)
+decorate(Enemy, Decorators.Bumping)
+decorate(Enemy, Decorators.Explodable)
+decorate(Enemy, Decorators.Moving)
+decorate(Enemy, Decorators.Pushable)
+decorate(Enemy, Decorators.Statused)
+decorate(Enemy, Decorators.WithHP)
+Enemy.chainTemplate:addHandler(<span class="hljs-string">'action'</span>, GeneralAlgo)
+</code></pre>
+<p>This:</p>
+<pre><code class="hljs css language-lua">Combos.Player(PlayerClass)
+</code></pre>
+<p>would substitute this:</p>
+<pre><code class="hljs css language-lua">Decorators.Start(Player)
+decorate(Player, Decorators.Ticking)
+decorate(Player, Decorators.Killable)
+decorate(Player, Decorators.Acting)    
+decorate(Player, Decorators.Attackable)
+decorate(Player, Decorators.Attacking) 
+decorate(Player, Decorators.Bumping)  
+decorate(Player, Decorators.Explodable)
+decorate(Player, Decorators.Moving)  
+decorate(Player, Decorators.Pushable) 
+decorate(Player, Decorators.Statused) 
+decorate(Player, Decorators.InvincibleAfterHit)
+decorate(Player, Decorators.PlayerControl)
+decorate(Player, Decorators.WithHP)
+Player.chainTemplate:addHandler(<span class="hljs-string">'action'</span>, PlayerAlgo)
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/Dungeon-Hopper-Docs/docs/vocab"><span class="arrow-prev">← </span><span>Calling Conventions</span></a><a class="docs-next button" href="/Dungeon-Hopper-Docs/docs/gameloop"><span>Next</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a><ul class="toc-headings"><li><a href="#some-new-terminology-on-methods">Some new terminology on methods:</a></li><li><a href="#how-to-use-the-decorators">How to use the decorators</a></li><li><a href="#what-do-decorators-do">What do decorators do?</a></li></ul></li><li><a href="#list-of-basic-decorators">List of basic decorators</a><ul class="toc-headings"><li><a href="#start"><code>Start</code></a></li><li><a href="#acting"><code>Acting</code></a></li><li><a href="#attackable"><code>Attackable</code></a></li><li><a href="#attacking"><code>Attacking</code></a></li><li><a href="#attackableonlywhennexttoattacker"><code>AttackableOnlyWhenNextToAttacker</code></a></li><li><a href="#bumping"><code>Bumping</code></a></li><li><a href="#explodable"><code>Explodable</code></a></li><li><a href="#invincibleafterhit"><code>InvincibleAfterHit</code></a></li><li><a href="#killable"><code>Killable</code></a></li><li><a href="#moving"><code>Moving</code></a></li><li><a href="#playercontrol"><code>PlayerControl</code></a></li><li><a href="#pushable"><code>Pushable</code></a></li><li><a href="#sequential"><code>Sequential</code></a></li><li><a href="#statused"><code>Statused</code></a></li><li><a href="#ticking"><code>Ticking</code></a></li><li><a href="#withhp"><code>WithHP</code></a></li></ul></li><li><a href="#combos">Combos</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>

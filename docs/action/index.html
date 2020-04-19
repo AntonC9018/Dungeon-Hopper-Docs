@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Action · Dungeon Hopper</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Overview"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Action · Dungeon Hopper"/><meta property="og:type" content="website"/><meta property="og:url" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/"/><meta property="og:description" content="## Overview"/><meta property="og:image" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/Dungeon-Hopper-Docs/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/Dungeon-Hopper-Docs/js/scrollSpy.js"></script><link rel="stylesheet" href="/Dungeon-Hopper-Docs/css/main.css"/><script src="/Dungeon-Hopper-Docs/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/Dungeon-Hopper-Docs/"><img class="logo" src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper"/><h2 class="headerTitleWithLogo">Dungeon Hopper</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/Dungeon-Hopper-Docs/docs/start" target="_self">Docs</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Topics</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Getting Started</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/start">What is this?</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Terminology And Basics</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/chains">Chains and Chain Templates</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/vocab">Calling Conventions</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Topics</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/decorators">Decorators</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/action">Action</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/algos">Algorithms</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/movs">Movs Algorithms</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/sequence">Sequence</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/modifiers">Modifiers</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Action</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="overview"></a><a href="#overview" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
+<p>In short, action is the object that statically describes the logic involved in a particular action in the game. For example, and <code>AttackAction</code> would kind of describe how to do an attack.</p>
+<p>When an entity decides on an action, it is said to have <code>computed</code> it. When this happens, it sets its <code>entity.nextAction</code> to this computed action. For enemies, this functionality is provided by the <code>Sequential</code> decorator, while for players, it's the <code>PlayerControl</code> decorator.</p>
+<h2><a class="anchor" aria-hidden="true" id="action-execution"></a><a href="#action-execution" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Action Execution</h2>
+<p>The action execution process is pretty convoluted.
+Let's break it down into components to clarify how it works.</p>
+<h3><a class="anchor" aria-hidden="true" id="prerequisites-for-becoming-an-acting"></a><a href="#prerequisites-for-becoming-an-acting" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Prerequisites for becoming an <code>Acting</code></h3>
+<p><code>Acting</code> is a decorator for entities. Entities decorated with <code>Acting</code> have the function <code>executeAction()</code> (which is just a shorthand for <code>entity.decorators.Acting:activation()</code>) actually doing something interesting. If the instance class has not been decorated with <code>Acting</code>, <code>executeAction</code> would just set <code>Acting.didAction</code> to <code>true</code>.</p>
+<p><code>Acting.something</code> in this and subsequent cases will refer to the <code>something</code> field on an entity class decorated with <code>Acting</code>.</p>
+<p>The <code>Acting</code> decorator can be applied to both player and non-player entities. Once done, though, you'll still have to provide the algorithm for action, that is, put an <code>Algo</code> handler into the new <code>action</code> chain received from the <code>Acting</code> decorator. Technically, you may add more than one algorithm.</p>
+<h3><a class="anchor" aria-hidden="true" id="structure"></a><a href="#structure" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Structure</h3>
+<p>Before starting on this, some new terminology has to be introduced:</p>
+<ol>
+<li>The event at the highest level, set as <code>Acting.enclosingEvent</code>, which is generated by <code>Acting.executeAction()</code> is the <strong>enclosingEvent</strong>.</li>
+<li>The succeeded event nested inside it that is generated by the action algorithm, will be called the <strong>algoEvent</strong>.</li>
+<li>The event produced by the functions <code>Attacking.executeAttack()</code>, <code>Moving.executeMove()</code> and so on will be called <strong>resultEvent</strong>.</li>
+<li>The events that come and go without being saved anywhere are <strong>internalEvent</strong>'s.</li>
+</ol>
+<p>Each <code>Acting NonPlayerReal</code> (<code>Acting</code> is a decorator) has a set of fields that reflect the action execution state:</p>
+<ol>
+<li><code>Acting.didAction</code> is set <code>true</code> once the action has been completely executed. The <code>game loop</code>, naturally, ignores them, so that the action is not repeated for many times over (remember, the <code>Acting</code> entities may make others act).</li>
+<li><code>Acting.doingAction</code> is set <code>true</code> once the <code>Acting.executeAction()</code> has been called, and <code>false</code> once exited.</li>
+</ol>
+<p>Now we'll examine <strong>the final event</strong> structure once it comes out of <code>Acting.executeAction()</code> (assume <code>GeneralAlgo</code>). It does not 'come out' as such, the function always returns nothing. The final event is saved as <code>Acting.enclosingEvent</code>. The standart fields of any event, which are <code>event.actor</code>, <code>event.action</code> and <code>event.propagate</code>, exist on each of the event structures examined, so they will be consequently omitted.</p>
+<p>This event has a special structure, and consequently will be called <code>EnclosingEvent</code>:</p>
+<ol>
+<li><code>EnclosingEvent.checkSuccess</code> - (boolean) same as <code>event.propagate</code>, except not inherited.</li>
+<li><code>EnclosingEvent.success</code> - (boolean) comes paired with the next field.</li>
+<li><code>EnclosingEvent.algoEvent</code> - The one event that actually occured, with the action and the direction:
+<ol>
+<li><code>algoEvent.success</code></li>
+<li>A nested <code>resultEvent</code> with a wild diversity of more fields depending on the action type. E.g. for an <code>AttackAction</code>, these would be:
+<ol>
+<li><code>resultEvent.attack</code> - the attack object applied</li>
+<li><code>resultEvent.push</code> - the push object applied</li>
+<li><code>resultEvent.status</code> - the status object applied</li>
+<li><code>resultEvent.targets</code> - a list of the <code>Target</code> objects, containing the reals actually hit. This list is formed by the weapon's spec or by taking the cell the actor is facing and getting the real out of it.</li>
+<li><code>resultEvent.attackEvents</code> - list of events generated as a result of reals being attacked</li>
+<li><code>resultEvent.pushEvents</code> - similarly, pushed</li>
+<li><code>resultEvent.statusEvents</code> - similarly, statused</li>
+<li><code>resultEvent.success</code> - whether the <code>check</code> or <code>get</code> (<code>getAttack</code> in this case) chain has been passed entirely through</li>
+</ol></li>
+</ol></li>
+</ol>
+<p>You can find the one direction that succeeded (assuming <code>GeneralAlgo</code>) in <code>EnclosingEvent.action.direction</code>.</p>
+<h3><a class="anchor" aria-hidden="true" id="the-algorithms"></a><a href="#the-algorithms" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The algorithms</h3>
+<p>Most common algorithms, which act by doing something in a direction, are the <code>GeneralAlgo</code> for non-player entities and <code>PlayerAlgo</code> for the player.</p>
+<p>The difference between these two is that the <code>GeneralAlgo</code> tests out a couple of desirable actions, which it would get from <code>entity.sequence.getMovs()</code> function (this function is set for each step of the sequence individually, see Sequence), gets the most desirable one out of them, and executes that single one, while the <code>PlayerAlgo</code> just does the selected action in the only direction provided (which came from user input).</p>
+<p>As a result, <strong>these algorithms support just one action of one type at a time</strong>. That is, with the <code>GeneralAlgo</code> it is impossible to program an enemy that e.g. would attack to the left, while spitting out a projectile to the right (it is possible, but hacky), which is also true for the <code>PlayerAlgo</code>.</p>
+<p>Another difference is that the <code>GeneralAlgo</code> would use different action structure than the <code>PlayerAlgo</code>. The <code>GeneralAlgo</code> expects there to be a <code>getMovs()</code> function on the action, while the <code>PlayerAlgo</code> does not. Also, action chains of enemies typically have a verification stage before deciding on which action to start. These are set on the <code>get</code> or <code>check</code> chain from the corresponding decorator. These chain are incorporated in the <code>chainsTemplate</code> directly on the entity class. For example, for an attack, the decorator would be <code>Attacking</code> and the chain would be named <code>getAttack</code>. So you would do:</p>
+<pre><code class="hljs css language-lua">MyEntity.chainTemplate:addHandler(<span class="hljs-string">'getAttack'</span>, myHandler)
+</code></pre>
+<p>There will be plenty of predefined handlers, but these are in fact just normal chain handlers that work with events. You can write ones yourself easily.</p>
+<p>The result of this is that the actions resulting in no avail for the player, e.g. attacking empty space, won't be executed, while for non-player entities this must be foreseen.</p>
+<p>Both of these algorithms also save the action that was relevant and set success to true. See Structure.</p>
+<h3><a class="anchor" aria-hidden="true" id="an-action-succeeding"></a><a href="#an-action-succeeding" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>An action 'succeeding'</h3>
+<p>Actions may be multi-step. That is, they may have multiple components to them. For example, there is the <code>AttackMoveAction</code> which indicates first attacking, then moving. So, attacking and moving are both <strong>action components</strong> in this case.</p>
+<p>An action component is considered to have <strong>succeeded</strong>, if its <code>resultEvent</code> went through every single handler in the action component check (or get) chain. For <code>Attack</code>, this would mean it went through every single handler of the <code>getAttack</code> chain. This is why for checking purposes one should add handlers that would stop the event to the check (or get) chains.</p>
+<p>In the case of an action component succeeding, the action as a whole would return, then the <code>resultEvent</code> would be saved on <code>algoEvent</code> and <code>algoEvent.succeed</code> would be set to <code>true</code>. Otherwise, <code>algoEvent.succeed</code> would be <code>false</code>, while <code>resultEvent</code> would be <code>nil</code>.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/Dungeon-Hopper-Docs/docs/gameloop"><span class="arrow-prev">← </span><span>Previous</span></a><a class="docs-next button" href="/Dungeon-Hopper-Docs/docs/algos"><span>Algorithms</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a></li><li><a href="#action-execution">Action Execution</a><ul class="toc-headings"><li><a href="#prerequisites-for-becoming-an-acting">Prerequisites for becoming an <code>Acting</code></a></li><li><a href="#structure">Structure</a></li><li><a href="#the-algorithms">The algorithms</a></li><li><a href="#an-action-succeeding">An action 'succeeding'</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>
