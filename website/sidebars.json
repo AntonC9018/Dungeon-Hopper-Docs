@@ -1,0 +1,20 @@
+{
+  "docs": {
+    "Getting Started": [
+        "start"
+    ],
+    "Terminology And Basics": [
+        "chains",
+        "vocab"
+    ],
+    "Topics": [
+        "decorators",
+        "gameloop",
+        "action",
+        "algos",
+        "movs",
+        "sequence",
+        "modifiers"
+    ]
+  }
+}
