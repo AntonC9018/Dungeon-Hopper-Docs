@@ -55,7 +55,19 @@ The decorator also gets pushed to the `myEntityClass.decoratorsList` for the fur
 
 #### *Initialization*
 
-The initialization stage takes place when your entity class is being instantiated. At this time, all Decorators saved on `myEntityClass.decoratorsList` are getting instantiated and their `myDecorator:__construct()` methods called. This is the moment they should instantiate things on the instance, if they need to.
+The initialization stage takes place when your entity class is being instantiated. At this time, all Decorators saved on `myEntityClass.decoratorsList` are getting instantiated and their `myDecorator:__construct()` methods called. This is the moment they should instantiate things on the instance, if they need to. The decorator instances are saved on `entity.decorators` (`entity` here being your instantiated `myEntityClass`), which is a table where the keys are the names of the applied decorator classes. For example, to access the `Attackable` decorator instance, one would do:
+```lua
+entity.decorators.Attackable
+-- or even better
+entity.decorators[class.name(Decorators.Attackable)]
+```
+This is useful for checking whether a specific decorator has been applied, although you are encouraged to use `entity:isDecorated(decorator)` if you are just checking.
+```lua
+decorate(EntityClass, Decorators.Attackable)
+local entity = EntityClass()
+print(entity:isDecorated(Decorators.Attackable)) -- true
+print(class.name(entity.decorators.Attackable)) -- Attackable
+```
 
 
 #### *Activation*

@@ -9,6 +9,12 @@ I pondered how I could refine what I had and decided to rewrite everything from 
 
 The core things have been written, and the project has been debugged, so it works!
 
+## Dependencies
+
+Among dependecies, there is the [Luaoop class library](https://github.com/ImagicTheCat/Luaoop) by ImagicTheCat(classes are used extensively throughout the project) and [inspect](https://github.com/kikito/inspect.lua) by kikito (dev dependency, useful for debugging). See their github repos for docs.
+
+[Vec](https://github.com/AntonC9018/Dungeon-Hopper/blob/master/lib/vec.lua) and [Emitter](https://github.com/AntonC9018/lua-event-emitter) are also used but are not documented in these docs (have not been thus far). [Chains](https://antonc9018.github.io/Dungeon-Hopper-Docs/docs/chains) are both used extensively and documented here.
+
 ## Progress
 
 List of things already implemented:
