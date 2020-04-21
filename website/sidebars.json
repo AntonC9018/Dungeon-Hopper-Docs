@@ -8,8 +8,8 @@
         "vocab"
     ],
     "Topics": [
-        "decorators",
         "gameloop",
+        "decorators",
         "action",
         "algos",
         "movs",

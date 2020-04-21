@@ -24,7 +24,7 @@ Step objects describe the action and the next step to do very precicely.
 | movs                        | Function | The movs algorithm                     | 
 | success                     | Number   | The step number if the action succeeds |
 | fail                        | Number   | The step if the action fails           |
-| checkSuccess                | Chain    | The chain passed to check if the action is considered to have succeeded. By default, the chain checks if any action succeedes |
+| checkSuccess                | Chain    | The chain passed to check if the action is considered to have succeeded. By default, the chain checks if any action succeedes. TODO: optinally use the index, returned by this chain instead of the `success` parameter |
 | enter                       | Function | Executed when the step is selected as the next one |
 | exit                        | Function | Executed when this step stops being the current step |
 | repet                       | Number   | Now many times to repeat this step until starting to check success |
@@ -112,3 +112,5 @@ step3 = {
     success = 1 -- this and the fail can be omitted, as the sequence loops by default
 }
 ```
+
+For a whole code example, see [this](https://github.com/AntonC9018/Dungeon-Hopper/blob/master/logic/action/sequence/EXAMPLE.lua)

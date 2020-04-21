@@ -6,8 +6,10 @@ title: Action
 ## Overview
 
 In short, action is the object that statically describes the logic involved in a particular action in the game. For example, and `AttackAction` would kind of describe how to do an attack.  
+> Note: Action instances are actually not completely static. One may add a `direction` field to it, which is the only non-static field used in the code for the time being.
 
 When an entity decides on an action, it is said to have `computed` it. When this happens, it sets its `entity.nextAction` to this computed action. For enemies, this functionality is provided by the `Sequential` decorator, while for players, it's the `PlayerControl` decorator.
+> At the time of computation, the fresh action does not include a direction for enemies. In this case the direction is computed separately by the action algorithm (e.g. `GeneralAlgo`) 
 
 ## Action Execution
 
@@ -51,17 +53,17 @@ This event has a special structure, and consequently will be called `EnclosingEv
         7. `resultEvent.statusEvents` - similarly, statused
         8. `resultEvent.success` - whether the `check` or `get` (`getAttack` in this case) chain has been passed entirely through 
 
-You can find the one direction that succeeded (assuming `GeneralAlgo`) in `EnclosingEvent.action.direction`.
+You can find the one direction that succeeded (assuming `GeneralAlgo`) in `enclosingEvent.action.direction`.
 
 ### The algorithms
 
 Most common algorithms, which act by doing something in a direction, are the `GeneralAlgo` for non-player entities and `PlayerAlgo` for the player. 
 
-The difference between these two is that the `GeneralAlgo` tests out a couple of desirable actions, which it would get from `entity.sequence.getMovs()` function (this function is set for each step of the sequence individually, see Sequence), gets the most desirable one out of them, and executes that single one, while the `PlayerAlgo` just does the selected action in the only direction provided (which came from user input). 
+The difference between these two is that the `GeneralAlgo` tests out a couple of desirable actions, which it would get from `entity.sequence.getMovs()` function (this function is set for each step of the sequence individually, see [Sequence](sequence.md)), gets the most desirable one out of them, and executes that single one, while the `PlayerAlgo` just does the selected action in the only direction provided (which came from user input). 
 
 As a result, **these algorithms support just one action of one type at a time**. That is, with the `GeneralAlgo` it is impossible to program an enemy that e.g. would attack to the left, while spitting out a projectile to the right (it is possible, but hacky), which is also true for the `PlayerAlgo`.
 
-Another difference is that the `GeneralAlgo` would use different action structure than the `PlayerAlgo`. The `GeneralAlgo` expects there to be a `getMovs()` function on the action, while the `PlayerAlgo` does not. Also, action chains of enemies typically have a verification stage before deciding on which action to start. These are set on the `get` or `check` chain from the corresponding decorator. These chain are incorporated in the `chainsTemplate` directly on the entity class. For example, for an attack, the decorator would be `Attacking` and the chain would be named `getAttack`. So you would do:
+Action chains of both enemies and players typically have a verification stage before deciding on which action to start. These are set on the `get` (or `check`) chain from the corresponding decorator. These chain are incorporated in the `chainTemplate` directly on the entity class. For example, for an attack, the decorator would be `Attacking` and the chain would be named `getAttack`. So you would do:
 
 ```lua
 MyEntity.chainTemplate:addHandler('getAttack', myHandler)
@@ -69,7 +71,7 @@ MyEntity.chainTemplate:addHandler('getAttack', myHandler)
 
 There will be plenty of predefined handlers, but these are in fact just normal chain handlers that work with events. You can write ones yourself easily.
 
-The result of this is that the actions resulting in no avail for the player, e.g. attacking empty space, won't be executed, while for non-player entities this must be foreseen.
+The repercussions of this design is that the actions resulting in no avail, e.g. attacking empty space, must be foreseen and prevented manually for both player and non-player entities.
 
 Both of these algorithms also save the action that was relevant and set success to true. See Structure.
 

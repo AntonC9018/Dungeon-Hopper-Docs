@@ -10,10 +10,10 @@ Decorators are used extensively throughout the project. They act pretty much lik
 
 ### Some new terminology on methods:
 
-1. `be<Something>` methods refer to applying that something on the object after a series of checks that are able to interfere with that, not allowing the effects. For example, `beAttacked` does the attack after going through a series of handlers, e.g. blocking some of the damage, or stopping the event from propagating completely, e.g. by being invincible. 
-2. `do<Something>` methods refer to applying the action on a previously unknown object. For example, `doAttack` method on `World` calculates which entity is going to be targeted and calls `beAttacked` on that enemy.
+1. `be<Something>` methods refer to applying that something on the entity after a series of checks that are able to interfere with that, not allowing the effects. For example, `beAttacked` does the attack after going through a series of handlers, e.g. blocking some of the damage, or stopping the event from propagating completely, e.g. by being invincible. 
+2. `do<Something>` methods refer to applying the action on a previously unknown object. For example, `doAttack` method on `World` calculates which entity is going to be targeted and calls `beAttacked` on those entities.
 3. `apply<Something>` methods refer to those methods which call `do<Something>` on `World`.
-4. `execute<Something>` is the same as the first one, except it is that object that does the action, that is, it is not the subject of the action. Foe example, `executeAttack`.
+4. `execute<Something>` is the same as the first one, except it is that object that does the action, that is, it is not the subject of the action. Foe example, `executeAttack` would make the entity try to do an attack.
 
 
 ### How to use the decorators
@@ -62,7 +62,7 @@ The initialization stage takes place when your entity class is being instantiate
 
 *Activation* as such implies the decorator's method `myDecorator:activate()` getting called. Typically, it would have the instance as the first parameter. 
 
-A fair amount of predefined decorators use the **checkApplyCycle** as their activation. The idea is straightforward: they would do a pass over their `check` chain and, if it were successful, that is, if it went through all its handlers without getting interrupted, the `do` chain is going to be passed too. Otherwise, it wouldn't. See *logic.decorators.utils*.
+A fair amount of predefined decorators use the **checkApplyCycle** as their activation. The idea is straightforward: they would do a pass over their `check` chain and, if it were successful, that is, if it went through all its handlers without getting interrupted, the `do` chain is going to be passed too. Otherwise, it wouldn't. See [logic.decorators.utils](https://github.com/AntonC9018/Dungeon-Hopper/blob/master/logic/decorators/utils.lua).
 
 For example, take `Decorators.Attacking`. It adds two chains: `getAttack`, which is the `check` (or `get`) chain, and `attack`, which is the `do` chain. 
 
@@ -129,7 +129,7 @@ TODO: THIS ONE IS QUESTIONABLE AND WILL BE REMOVED
 ### `Bumping`
 | Added chain | Automatically added handlers | Description |
 |-------------|------------------------------| ----------- |
-| `failAction`| `bump`                       |             |
+| `failAction`| `bump` (Removed)             ||
 
 
 ### `Explodable`
@@ -216,7 +216,7 @@ actor.nextAction = nil
 actor.enclosingEvent = nil
 ```
 
-TODO: resetting of action should be done at the `reset` stage instead.
+Update: `resetBasic` should has been moved to the `reset` stage instead.
 
 **Shorthand activation**: `Entity.tick()`
 

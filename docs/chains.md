@@ -103,7 +103,7 @@ This feature may fix future bugs like a ring that e.g. gives you temporary damag
 
 ### Overview
 
-Chain templates are a way of planning out a standart structure of a set of chains. 
+Chain templates offer a way of planning out a standart structure of a set of chains. 
 
 ### Example
 
