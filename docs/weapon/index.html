@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Weapons · Dungeon Hopper</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Overview"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Weapons · Dungeon Hopper"/><meta property="og:type" content="website"/><meta property="og:url" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/"/><meta property="og:description" content="## Overview"/><meta property="og:image" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/Dungeon-Hopper-Docs/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/Dungeon-Hopper-Docs/js/scrollSpy.js"></script><link rel="stylesheet" href="/Dungeon-Hopper-Docs/css/main.css"/><script src="/Dungeon-Hopper-Docs/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/Dungeon-Hopper-Docs/"><img class="logo" src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper"/><h2 class="headerTitleWithLogo">Dungeon Hopper</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/Dungeon-Hopper-Docs/docs/start" target="_self">Docs</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Topics</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Getting Started</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/start">What is this?</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Terminology And Basics</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/chains">Chains and Chain Templates</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/vocab">Calling Conventions</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Topics</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/gameloop">Game Loop</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/decorators">Decorators</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/action">Action</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/algos">Algorithms</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/movs">Movs Algorithms</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/sequence">Sequence</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/modifiers">Modifiers</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/weapon">Weapons</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Weapons</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="overview"></a><a href="#overview" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
+<p>Weapons offer a way of incorporating patterns into normal attacks.</p>
+<p>They achieve any behavior you want using these 3 (4) things:</p>
+<ol>
+<li>The <strong>pattern</strong>. Specifies kind of the form of the attack;</li>
+<li>The <strong>check function</strong> and the <strong>(algorithm) chain</strong>. Describes the algorithm of filtering the targets acquired by means of pattern;</li>
+<li><strong>hitAll</strong> field, which is mostly applicable to the General (algorithm) chain for weapons (will be covered here).</li>
+</ol>
+<h2><a class="anchor" aria-hidden="true" id="pattern"></a><a href="#pattern" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pattern</h2>
+<p><code>Pattern</code> contains relative to the weapon holder coordinates and some other attributes. All of these are wrapped in <code>Piece</code> objects. The <code>Piece</code> attributes are as follows:</p>
+<table>
+<thead>
+<tr><th>Attribute</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>pos</code></td><td>Vec</td><td>Coordinate relative to the attacker</td></tr>
+<tr><td><code>dir</code></td><td>Vec</td><td>Knockback direction</td></tr>
+<tr><td><code>reach</code></td><td>Bool</td><td>Whether to keep the target only if all previous attacks were not blocked by e.g. a wall</td></tr>
+</tbody>
+</table>
+<p>The default orientation, against which the pieces are rotated, is <em>Vec(1, 0)</em> (straight to the right), so build all your patterns as though your character looks to the right.</p>
+<p>For example, consider the spear attack pattern:</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> pattern = Pattern()
+pattern:add( Vec(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), Vec(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), <span class="hljs-literal">false</span> ) <span class="hljs-comment">-- { pos = (1, 0), dir = (1, 0), reach = false }</span>
+pattern:add( Vec(<span class="hljs-number">2</span>, <span class="hljs-number">0</span>), Vec(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), <span class="hljs-literal">true</span>  ) <span class="hljs-comment">-- { pos = (2, 0), dir = (1, 0), reach = true  }</span>
+</code></pre>
+<p>Which represents the following attack pattern. Note that in the case when the first spot is blocked, the second is not targeted, since reach of the second piece is true.</p>
+<p><img src="/Dungeon-Hopper-Docs/docs/assets/pattern_example_1.png" alt="Spear attack pattern"></p>
+<p>For a more specific behavior of <code>reach</code>, that is, checking attacks at specific indices, just provide a list of indices instead of true in the pattern definition (not yet implemented), like so:</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> pattern = Pattern()
+pattern:add( Vec(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>),  Vec(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>),  <span class="hljs-literal">false</span> )
+pattern:add( Vec(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>),  Vec(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>),  <span class="hljs-literal">false</span> )
+pattern:add( Vec(<span class="hljs-number">1</span>, <span class="hljs-number">-1</span>), Vec(<span class="hljs-number">0</span>, <span class="hljs-number">-1</span>), <span class="hljs-literal">false</span> )
+pattern:add( Vec(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>),  Vec(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>),  { <span class="hljs-number">2</span> } )
+pattern:add( Vec(<span class="hljs-number">1</span>, <span class="hljs-number">-2</span>), Vec(<span class="hljs-number">0</span>, <span class="hljs-number">-1</span>), { <span class="hljs-number">3</span> } )
+</code></pre>
+<p>Which happens to be the pattern of a whip in the original Necrodancer.</p>
+<p>In case you don't have <code>Weapon.hitAll</code> set to true and are using the <code>general weapon (algorithm) chain</code>, the pieces of your pattern will be tested in order and only the first match will make it into the targets list.</p>
+<h2><a class="anchor" aria-hidden="true" id="the-chains"></a><a href="#the-chains" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The chains</h2>
+<p>The ability to define custom weapon chains gives you precise control over the algorithm of your specific weapon. For most weapons, though, the general chain is good enough.</p>
+<p>These custom chains should be set as <code>Weapon.chain</code> for the algorithm chain and <code>Weapon.check</code> for the check function.</p>
+<h3><a class="anchor" aria-hidden="true" id="the-general-algorithm-chain"></a><a href="#the-general-algorithm-chain" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The general (algorithm) chain</h3>
+<p>The steps that the general (algorithm) chain follows are the following:</p>
+<ol>
+<li>Check if hitting only those entities that are attackable only when you are next to them (e.g. crates) without being next to any (return nothing in this case);</li>
+<li>If <code>Weapon.hitAll</code> is set, return all targets;</li>
+<li>Check unreachableness (eliminate unreachable ones), which is what <code>Piece.reach</code> is responsible for;</li>
+<li>Eliminate targets with <code>Attackableness.IS_CLOSE</code> that aren't close and those with <code>Attackableness.NO</code>, that is, prioritize normal enemies over e.g. crates. TODO: Targets with <code>Attackablesness.SKIP</code> are not taken into account;</li>
+<li>Take the first target in the list. TODO: unless it has <code>Attackableness.SKIP</code>. In this case, take the first available after it.</li>
+</ol>
+<p>The general check function stops propagation if <code>event.propagate</code> is false or if the list of targets is empty.</p>
+<h2><a class="anchor" aria-hidden="true" id="hitall"></a><a href="#hitall" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>hitAll</code></h2>
+<p>As has been stated above, <code>hitAll</code> makes it so that all available targets are returned (see the steps before).</p>
+<h2><a class="anchor" aria-hidden="true" id="weapongettargetsactor-action"></a><a href="#weapongettargetsactor-action" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Weapon:getTargets(actor, action)</code></h2>
+<p>This function returns the list of targets for the current actor and action. Targets are objects of the form:</p>
+<table>
+<thead>
+<tr><th>Attribute</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>entity</code></td><td>Entity</td><td>The entity targeted by the attack</td></tr>
+<tr><td><code>piece</code></td><td>Piece</td><td>The rotated piece object from the pattern</td></tr>
+<tr><td><code>index</code></td><td>Number</td><td>Which step in the pattern this piece belongs</td></tr>
+<tr><td><code>attackableness</code></td><td>Attackableness: NO, YES, IF_CLOSE, TODO: SKIP</td><td>returned by <code>Entity:getAttackableness(attacker, action)</code> on the targeted entity</td></tr>
+</tbody>
+</table>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/Dungeon-Hopper-Docs/docs/modifiers"><span class="arrow-prev">← </span><span>Modifiers</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a></li><li><a href="#pattern">Pattern</a></li><li><a href="#the-chains">The chains</a><ul class="toc-headings"><li><a href="#the-general-algorithm-chain">The general (algorithm) chain</a></li></ul></li><li><a href="#hitall"><code>hitAll</code></a></li><li><a href="#weapongettargetsactor-action"><code>Weapon:getTargets(actor, action)</code></a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>
