@@ -14,7 +14,8 @@
         "algos",
         "movs",
         "sequence",
-        "modifiers"
+        "modifiers",
+        "weapon"
     ]
   }
 }

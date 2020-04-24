@@ -112,6 +112,7 @@ This decorator enables the entity to take normal hits.
 |-------------|------------------------------| ----------- |
 | `defence`   | Reduction by base armor      | This chain is traversed when your entity is about to take damage. These methods mild or amplify effects of the attack. |
 | `beHit`     | `takeHit`, `die`             | Handlers of this chain are traversed after a hit has been assured to come through by the `defence` chain.  |
+| `canBeAttacked` | | |
 
 `takeHit` does damage to you (without applying status effects and pushing, see `Pushable` and `Statused` for that). 
 > `Entity.takeHit()` is the shorthand for `Entity.decorators.WithHP.activate()` 
@@ -121,6 +122,9 @@ This decorator enables the entity to take normal hits.
 
 **Shorthand activation**: `Entity.beAttacked()`
 
+Also has a function, `Attackable.getAttackableness()`, which traverses the `canBeAttacked` chain and return the Attackableness of this entity, which can be NO, YES, IF_CLOSE (TODO: SKIP, for being able to attack through the entity). Default return value: `Attackableness.YES`. 
+
+This function also has a shorthand activation, `Entity.getAttackableness()`, which returns `Attackableness.NO` if the entity has not been decorated with `Attackable`.
 
 ### `Attacking`
 
@@ -151,6 +155,24 @@ Enables the entity to be exploded
 ### `InvincibleAfterHit`
 Makes the entity invincible for 2 loop after it's taken a hit
 
+
+### `Diggable`
+Enables the entity to be dug. The wall would take damage on dig equal to dig damage.
+
+| Added chain | Automatically added handlers | Description |
+|-------------|------------------------------| ----------- |
+| `checkDig`  | `checkPower`                 |             |
+| `beDug`     | `takeDigDamage`, `die`       |             |
+
+### `Digging`
+This decorator enables the entity to dig.
+
+| Added chain | Automatically added handlers | Description |
+|-------------|------------------------------| ----------- |
+| `getDig`    | `setBase`, `getTargets`      |             |
+| `dig`       | `applyDig`                   |             |
+
+> Currently, the logic by which `getTargets` works is very similar to that of normal attacking. Thus, these might be merged in some way in the future. This would mean shovels will be of a subclass of Weapon.
 
 ### `Killable`
 
