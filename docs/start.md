@@ -5,7 +5,7 @@ title: What is this?
 
 It's a game based on mechanics of NecroDancer. Right now I'm developing the logic for it. I've done an attempt at this previously, but the project had gone out of hand rather quickly. You may find the old code in old versions of the repo.
 
-I pondered how I could refine what I had and decided to rewrite everything from scatch taking a more strict and manageable approach. Nonetheless, the initial attempt was fine for the first attempt, and good for realizing the right direction.
+I pondered how I could refine what I had and decided to rewrite everything from scratch taking a more strict and manageable approach. Nonetheless, the initial attempt was fine for the first attempt, and good for realizing the right direction.
 
 The core things have been written, and the project has been debugged, so it works!
 

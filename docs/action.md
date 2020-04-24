@@ -6,7 +6,7 @@ title: Action
 ## Overview
 
 In short, action is the object that statically describes the logic involved in a particular action in the game. For example, and `AttackAction` would kind of describe how to do an attack.  
-> Note: Action instances are actually not completely static. One may add a `direction` field to it, which is the only non-static field used in the code for the time being.
+> Note: Action instances are actually not completely static. One may add a `direction` and effects like `attack`, `push`, `dig` and `move` onto it.
 
 When an entity decides on an action, it is said to have `computed` it. When this happens, it sets its `entity.nextAction` to this computed action. For enemies, this functionality is provided by the `Sequential` decorator, while for players, it's the `PlayerControl` decorator.
 > At the time of computation, the fresh action does not include a direction for enemies. In this case the direction is computed separately by the action algorithm (e.g. `GeneralAlgo`) 

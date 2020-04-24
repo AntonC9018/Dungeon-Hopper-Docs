@@ -21,6 +21,12 @@ Modifiers do not need their own classes. Here is what field each type of modifie
 
 `power` - mininum level of push protection to prevent the pushing
 
+## Dig
+
+`damage` - dig damage (digging is doing damage to walls)
+
+`power` - minimum dig resistance to prevent the digging
+
 ## Resistance
 
 `armor` - damage reduction
@@ -31,6 +37,8 @@ Modifiers do not need their own classes. Here is what field each type of modifie
 
 `pierce`
 
+`dig` - dig protection level
+
 ## Status
 
 Here should be all the different types of status effects, which will be added later
@@ -38,3 +46,4 @@ Here should be all the different types of status effects, which will be added la
 ## HP
 
 For now, an int
+
