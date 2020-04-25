@@ -18,7 +18,7 @@ Among dependecies, there is the [Luaoop class library](https://github.com/Imagic
 ## Progress
 
 List of things already implemented:
-1. Chains and Chain Templates (lacking sorting based on priority, though)
+1. Chains and Chain Templates (Implemented sorting based on priority)
 2. High-level Grid
 3. General action execution algorithm for player and non-player entities
 4. Attacking and Attackable decorators
@@ -35,9 +35,9 @@ List of important things not implemented:
 6. Basic Controls -
 
 List of less significant things not implemented:
-1. Digging, walls
-2. Traps
-3. Special tiles
+1. Digging, walls +
+2. Traps +
+3. Special tiles +
 4. Explosions
 5. Environment Objects
 6. Status effects
