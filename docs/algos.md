@@ -5,7 +5,7 @@ title: Algorithms
 
 ## Overview
 
-Here described the algorithms of **non-player action execution process** and **player action execution process**.
+Here are described the algorithms of **non-player action execution process** and **player action execution process**.
 
 
 ## The General Algo

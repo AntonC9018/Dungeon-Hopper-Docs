@@ -21,7 +21,7 @@ Step objects describe the action and the next step to do very precicely.
 | Property name (in a config) | Type     | Description                            |
 | ----------------------------|--------- | -----------------------------------    |
 | action                      | Action   | The action to be used for this step    |
-| movs                        | Function | The ![movs](movs.md) algorithm         | 
+| movs                        | Function | The [movs](movs.md) algorithm         | 
 | success                     | Number   | The step number if the action succeeds |
 | fail                        | Number   | The step if the action fails           |
 | checkSuccess                | Chain*   | The chain passed to check if the action is considered to have succeeded. |

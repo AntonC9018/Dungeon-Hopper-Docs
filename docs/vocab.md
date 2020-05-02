@@ -22,7 +22,7 @@ Entities may be addressed in a certain way depending on the properties they have
     * *`Pickuppable`*, whether the thing can be picked up by player. *Picking-up* means destroying and converting to some other information, e.g. dropped item -> picked-up item
     * *`Real`* if the entity is a player, an enemy or an environmental object, such as a barrel etc. and *`Non-Real`* otherwise.
 
-And others. Entities are given these properties by means of *decoration*. See ![Decorators](decorators.md) for a complete list of predefined decorators.
+And others. Entities are given these properties by means of *decoration*. See [Decorators](decorators.md) for a complete list of predefined decorators.
 
 
 ## Stats
@@ -33,7 +33,7 @@ And others. Entities are given these properties by means of *decoration*. See ![
 ## Modifiers
 
 A `Modifier` is an object, the exact type of which is specified by objects that would use it. 
-The most relevant place where `Modifiers` are used is the table `Entity.baseModifiers`, that has fields for attack, armor, push, status and possibly resistances (not yet implemented fully). Secondly, `Modifiers` are used and, in fact, defined by the `DynamicStats` decorator. It lets one get or modify a specific stat dynamically. More on this decorator in the ![Decorators section](decorators.md).
+The most relevant place where `Modifiers` are used is the table `Entity.baseModifiers`, that has fields for attack, armor, push, status and possibly resistances (not yet implemented fully). Secondly, `Modifiers` are used and, in fact, defined by the `DynamicStats` decorator. It lets one get or modify a specific stat dynamically. More on this decorator in the [Decorators section](decorators.md).
 
 
 ## Effects
