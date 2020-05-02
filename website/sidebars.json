@@ -15,7 +15,8 @@
         "movs",
         "sequence",
         "modifiers",
-        "weapon"
+        "weapon",
+        "dynamicstats"
     ]
   }
 }
