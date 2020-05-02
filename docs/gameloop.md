@@ -12,12 +12,12 @@ Here is an overview of what happens during the game loop and in what order.
 2. After that, all game objects are asked to decide on their next action, and save it inside them (see [Action](action.md)). These calculations must not affect the grid (world) state.
 
 3. Now all actions are executed in this order:
-    1. *Projectiles*
     1. *Player* actions
+    1. *Projectiles*
     2. All *Reals* but player
     3. *Explosions*
+    5. *Traps*
     4. *Floor* hazards
-    5. finally, *Traps*
 
 4. Destroyed (*dead*) things are filtered out, things are rendered and then *reset*. *Resetting* means deleting the actions that the objects chose inside those objects and some other variables for doing those action calculations. 
 

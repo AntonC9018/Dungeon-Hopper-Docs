@@ -16,20 +16,36 @@ A `Sequence` is basically an array of such steps.
 
 Step objects describe the action and the next step to do very precicely.
 
-#### Properties
+### Properties
 
 | Property name (in a config) | Type     | Description                            |
 | ----------------------------|--------- | -----------------------------------    |
 | action                      | Action   | The action to be used for this step    |
-| movs                        | Function | The movs algorithm                     | 
+| movs                        | Function | The ![movs](movs.md) algorithm         | 
 | success                     | Number   | The step number if the action succeeds |
 | fail                        | Number   | The step if the action fails           |
-| checkSuccess                | Chain    | The chain passed to check if the action is considered to have succeeded. By default, the chain checks if any action succeedes. TODO: optinally use the index, returned by this chain instead of the `success` parameter |
-| enter                       | Function | Executed when the step is selected as the next one |
-| exit                        | Function | Executed when this step stops being the current step |
+| checkSuccess                | Chain*   | The chain passed to check if the action is considered to have succeeded. |
+| enter                       | Chain*   | Executed when the step is selected as the next one |
+| exit                        | Chain*   | Executed when this step stops being the current step |
 | repet                       | Number   | Now many times to repeat this step until starting to check success |
 
-#### Example
+Out of these fields, only the action field must be specified in all steps.
+
+#### Chain*
+This can either be a chain, a handler or a list of handlers. If you are providing a list of handlers, however, the chain used is the normal chain, not the sorted one (schain). This is mainly done for optimization purposes.
+
+#### `checkSuccess`
+This chain is traversed once the entity is `ticked`, which is the reason why the event passed down the chain has `triggerEvent` being the tick event. The event actually has the actor set correctly, so you can access the result event for checks as `event.actor.enclosingEvent.algoEvent.resultEvent`.
+
+If your handler decides to mark the event successful, set `event.success` to `true`. Optionally, you may provide the next step index as `event.index`. If not specified, the `success` parameter from config is used instead.
+
+#### `enter` and `exit`
+These do not receive their own event, but are passed the tick event directly. It is not recommended that you modify it.
+
+Similarly, the result event can be accessed via `event.actor.enclosingEvent.algoEvent.resultEvent`.
+
+
+### Example
 For example, take a simple skeleton.
 
 It has 2 steps in its sequence:
@@ -71,10 +87,8 @@ step1 = {
         Action.fromHandlers(
             -- the name of the action
             "TurnToPlayer", 
-            { 
-                -- use a handler, predefined or coded on your own
-                turnToPlayer
-            }
+              -- use a handler, predefined or coded on your own
+              turnToPlayer
         ) 
     checkSuccess = 
         -- we've gotta chuck a checkOrthogonal function here
@@ -82,7 +96,7 @@ step1 = {
         -- are on one line / column
         -- for this, we create a custom chain on which we hang that function
         -- create a chain that consists of one handler
-        chain: Chain({ checkOrthogonal }),
+        chain: checkOrthogonal,
      -- the next step index
     success = 2,
     -- in case this fails, e.g. we're frozen, remain at the 1st step
@@ -93,7 +107,7 @@ step2 = {
     -- this one is simpler
     action = AttackDigMove,
     -- for success we again need a custom chain
-    checkSuccess = Chain({ checkNotMove }),
+    checkSuccess = checkNotMove,
     -- in case of moving, do the next step
     success = 3
     -- in case frozen, keep rolling
@@ -113,4 +127,4 @@ step3 = {
 }
 ```
 
-For a whole code example, see [this](https://github.com/AntonC9018/Dungeon-Hopper/blob/master/logic/action/sequence/EXAMPLE.lua)
+For a whole code example, see [this](https://github.com/AntonC9018/Dungeon-Hopper/blob/master/logic/sequence/EXAMPLE.lua).

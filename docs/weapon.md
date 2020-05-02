@@ -20,7 +20,7 @@ They achieve any behavior you want using these 2 (3) things:
 | --------- | ---- | --------- |
 | `pos`     | Vec  | Coordinate relative to the attacker |
 | `dir`     | Vec  | Knockback direction |
-| `reach`   | Bool | Whether to keep the target only if all previous attacks were not blocked by e.g. a wall |
+| `reach`   | Bool or an array of indices | Whether to keep the target only if all previous attacks (if given a table of indices, check those indices) were not blocked by e.g. a wall |
 
 The default orientation, against which the pieces are rotated, is *Vec(1, 0)* (straight to the right), so build all your patterns as though your character looks to the right.
 
@@ -61,20 +61,22 @@ These custom chains should be set as `Weapon.chain` for the algorithm chain and 
 ### The general (algorithm) chain
 
 The steps that the general (algorithm) chain follows are the following:
+1. Filter out targets without entities;
 1. Check if hitting only those entities that are attackable only when you are next to them (e.g. crates) without being next to any (return an empty list in this case);
-2. Filter out the targets with `Attackableness.NO`.
 3. Check unreachableness (eliminate unreachable ones), which is what `Piece.reach` is responsible for;
+2. Filter out the targets with `Attackableness.NO`;
 4. Eliminate targets with `Attackableness.IS_CLOSE` that aren't close, that is, prioritize normal enemies over e.g. crates. TODO: Targets with `Attackablesness.SKIP` are not taken into account;
-5. Take the first target in the list. TODO: unless it has `Attackableness.SKIP`. In this case, take the first available after it.
+5. Take the first target in the list, unless it has `Attackableness.SKIP`. In this case, take the first available after it.
 
 The general check function stops propagation if `event.propagate` is false or if the list of targets is empty.  
 
 
-## Hitting all targets
+### Hitting all targets
 
 There is another standart chain you can use, called `hitAll`. Its steps are as follows: 
-1. Check if hitting only those entities that are attackable only when you are next to them (e.g. crates) without being next to any (return nothing in this case);
-2. Filter the list, leaving only Attackable entities.
+1. Filter out targets without entities;
+2. Check if hitting only those entities that are attackable only when you are next to them (e.g. crates) without being next to any (return nothing in this case);
+3. Filter the list, leaving only Attackable entities.
 
 Be careful as this algorithm ignores `reach` in the pattern.
 
@@ -90,6 +92,6 @@ This function returns the list of targets for the current actor and action. Targ
 | `entity`  | Entity  | The entity targeted by the attack |
 | `piece`   | Piece   | The rotated piece object from the pattern |
 | `index`   | Number  | Which step in the pattern this piece belongs |
-| `attackableness` | Attackableness: NO, YES, IF_CLOSE, TODO: SKIP | returned by `Entity:getAttackableness(attacker, action)` on the targeted entity |
+| `attackableness` | Attackableness: NO, YES, IF_CLOSE, SKIP | returned by `Entity:getAttackableness(attacker, action)` on the targeted entity |
 
 In case no targets have been found, it returns an empty list.

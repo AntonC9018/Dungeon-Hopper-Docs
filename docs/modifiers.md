@@ -3,7 +3,7 @@ id: modifiers
 title: Modifiers
 ---
 
-Modifiers do not need their own classes. Here is what field each type of modifier should have.
+Modifiers define how stats are presented in `Entity.baseModifiers` and stored in the `DynamicStats` decorator.
 
 ## Attack Modifier
 

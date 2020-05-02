@@ -41,7 +41,7 @@ They all share these 3 basic stages
 
 This is the moment the `Decorator.decorate` method is called. It works by taking the list of `affectedChains` from the decorator class and adding them to the `chainTemplate` of your entity class. 
 
-For example, such chains would create a chain named `myCheck` on the entity class's `chainTemplate` and add the handlers `checkHandler1` and `checkHandler2` onto it. After that, it would create the chain `myExecute`, adding just the `executeHandler1` to it and, finally, it would just create the new `myEmpty` chain on the `chainTemplate`, without adding any handler onto it.:
+For example, such chains would create a chain named `myCheck` on the entity class's `chainTemplate` and add the handlers `checkHandler1` and `checkHandler2` onto it. After that, it would create the chain `myExecute`, adding just the `executeHandler1` to it and, finally, it would just create the new `myEmpty` chain on the `chainTemplate`, without adding any handler onto it:
 ```lua
 MyDecorator.affectedChains = {
     { 'myCheck',   { checkHandler1, checkHandler2 } },
@@ -50,8 +50,20 @@ MyDecorator.affectedChains = {
 }
 ```  
 
-The decorator also gets pushed to the `myEntityClass.decoratorsList` for the further initialization stage.
+By default, *sorted* chains and chain templates are used, which means one can do the following:
+```lua
+MyDecorator.affectedChains = {
+    { 'myCheck',   
+        { 
+            { checkHandler1, Ranks.LOW }, -- using priority rank
+            { checkHandler2, 600000    }, -- using priority directly 
+            checkHandler3                 -- defaults to MEDIUM
+        } 
+    },
+}
+``` 
 
+The decorator also gets pushed to the `myEntityClass.decoratorsList` for the further initialization stage.
 
 #### *Initialization*
 
@@ -101,7 +113,7 @@ Enables the entity to apply action that were saved as `Entity.nextAction` during
 | `failAction`    | -                            | traversed if no action succeeded|
 | `succeedAction` | -                            | traversed if an action succeeded|
 
-**Shorthand activation**: `Entity.executeAction()`
+**Shorthand activation**: `Entity:executeAction()`
 
 
 ### `Attackable`
@@ -120,11 +132,11 @@ This decorator enables the entity to take normal hits.
 `die` checks if the health is 0 and calls the `Entity.die()` if it is.
 > `Entity.die()` is the shorthand for `Entity.decorators.Killable.activate()`
 
-**Shorthand activation**: `Entity.beAttacked()`
+**Shorthand activation**: `Entity:beAttacked(action)`
 
-Also has a function, `Attackable.getAttackableness()`, which traverses the `canBeAttacked` chain and return the Attackableness of this entity, which can be NO, YES, IF_CLOSE (TODO: SKIP, for being able to attack through the entity). Default return value: `Attackableness.YES`. 
+Also has a function, `Attackable.getAttackableness(actor, attacker)`, which traverses the `canBeAttacked` chain and return the Attackableness of this entity, which can be NO, YES, IF_CLOSE (TODO: SKIP, for being able to attack through the entity). Default return value: `Attackableness.YES`. 
 
-This function also has a shorthand activation, `Entity.getAttackableness()`, which returns `Attackableness.NO` if the entity has not been decorated with `Attackable`.
+This function also has a shorthand activation, `Entity:getAttackableness(attacker)`, which returns `Attackableness.NO` if the entity has not been decorated with `Attackable`.
 
 ### `Attacking`
 
@@ -135,17 +147,7 @@ This decorator enables the entity to do normal hits.
 | `getAttack` | `setBase`, `getTargets`      | Used for creating the Attack object and modifying it with e.g. more damage |
 | `attack`    | `applyAttack`, `applyPush`, `applyStatus` | Used for doing the Attack and applying push and the related status effects |
 
-**Shorthand activation**: `Entity.executeAttack()`
-
-
-### `AttackableOnlyWhenNextToAttacker`
-TODO: THIS ONE IS QUESTIONABLE AND WILL BE REMOVED
-
-
-### `Bumping`
-| Added chain | Automatically added handlers | Description |
-|-------------|------------------------------| ----------- |
-| `failAction`| `bump` (Removed)             ||
+**Shorthand activation**: `Entity:executeAttack(action)`
 
 
 ### `Explodable`
@@ -153,6 +155,7 @@ Enables the entity to be exploded
 
 
 ### `InvincibleAfterHit`
+TODO: `Invincible` should be a decorator
 Makes the entity invincible for 2 loop after it's taken a hit
 
 
@@ -174,6 +177,12 @@ This decorator enables the entity to dig.
 
 > Currently, the logic by which `getTargets` works is very similar to that of normal attacking. Thus, these might be merged in some way in the future. This would mean shovels will be of a subclass of Weapon.
 
+
+### `DynamicStats`
+This decorator adds the possibility to easily initialize with fallbacks to default values, retrieve and modify any stats of your entity.
+
+This decorator doesn't add any chains, but has a number of useful methods. See [Dynamic Stats](dynamicstats.md).
+
 ### `Killable`
 
 | Added chain | Automatically added handlers | Description |
@@ -181,7 +190,8 @@ This decorator enables the entity to dig.
 | `checkDie`  | -                            |             |
 | `die`       | `die` | sets `entity.dead` to `true` and calls `world:removeDead()`|
 
-**Shorthand activation**: `Entity.die()`
+
+**Shorthand activation**: `Entity:die()`
 
 
 ### `Moving`
@@ -192,13 +202,13 @@ Enables entity to displace.
 | `getMove`     | `getBaseMove`                |             |
 | `move`        | `displace`                   |             |
 
-**Shorthand activation**: `Entity.executeMove()`
+**Shorthand activation**: `Entity:executeMove(action)`
 
 
 ### `PlayerControl`
 Converts direction to an action for the player
 
-**Shorthand activation**: `Player.generateAction()`, just for players
+**Shorthand activation**: `Player:generateAction()`, just for players
 
 
 ### `Pushable`
@@ -210,7 +220,7 @@ Enables the entity to be pushed
 | `checkPush`   | `checkPush`                  |             |
 | `executePush` | `executePush`                |             |
 
-**Shorthand activation**: `Entity.bePushed()`
+**Shorthand activation**: `Entity:bePushed(action)`
 
 
 ### `Sequential`
@@ -219,7 +229,7 @@ Enables the entity to calculate their next action. Uses a `Sequence` object to k
 
 The `Sequence` is instantiated and set on the entity as `Entity.sequence`.
 
-**Shorthand activation**: `Entity.calculateAction()`
+**Shorthand activation**: `Entity:calculateAction()`
 
 
 ### `Statused`
@@ -231,7 +241,7 @@ Makes the entity vulnerable to status effects. Status effects are being frozen, 
 | `checkStatus` | `checkStatus`                |             |
 | `applyStatus` | `applyStatus`                |             |
 
-**Shorthand activation**: `Entity.beStatused()`
+**Shorthand activation**: `Entity:beStatused(action)`
 
 
 ### `Ticking`
@@ -252,14 +262,14 @@ actor.enclosingEvent = nil
 
 Update: `resetBasic` should has been moved to the `reset` stage instead.
 
-**Shorthand activation**: `Entity.tick()`
+**Shorthand activation**: `Entity:tick()`
 
 
 ### `WithHP`
 
 Adds an `hp` object to the player. Makes them `takeDamage` on activation.
 
-**Shorthand activation**: `Entity.takeDamage()`
+**Shorthand activation**: `Entity:takeDamage(damage)`
 
 
 ## Combos
