@@ -16,7 +16,8 @@
         "sequence",
         "modifiers",
         "weapon",
-        "dynamicstats"
+        "dynamicstats",
+        "retouchers"
     ]
   }
 }
