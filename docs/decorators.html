@@ -80,11 +80,22 @@ In our example, this would mean stopping event from propagating in <code>myEntit
 <p>They all share these 3 basic stages</p>
 <h4><a class="anchor" aria-hidden="true" id="decoration"></a><a href="#decoration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>Decoration</em></h4>
 <p>This is the moment the <code>Decorator.decorate</code> method is called. It works by taking the list of <code>affectedChains</code> from the decorator class and adding them to the <code>chainTemplate</code> of your entity class.</p>
-<p>For example, such chains would create a chain named <code>myCheck</code> on the entity class's <code>chainTemplate</code> and add the handlers <code>checkHandler1</code> and <code>checkHandler2</code> onto it. After that, it would create the chain <code>myExecute</code>, adding just the <code>executeHandler1</code> to it and, finally, it would just create the new <code>myEmpty</code> chain on the <code>chainTemplate</code>, without adding any handler onto it.:</p>
+<p>For example, such chains would create a chain named <code>myCheck</code> on the entity class's <code>chainTemplate</code> and add the handlers <code>checkHandler1</code> and <code>checkHandler2</code> onto it. After that, it would create the chain <code>myExecute</code>, adding just the <code>executeHandler1</code> to it and, finally, it would just create the new <code>myEmpty</code> chain on the <code>chainTemplate</code>, without adding any handler onto it:</p>
 <pre><code class="hljs css language-lua">MyDecorator.affectedChains = {
     { <span class="hljs-string">'myCheck'</span>,   { checkHandler1, checkHandler2 } },
     { <span class="hljs-string">'myExecute'</span>, { executeHandler1 }              },
     { <span class="hljs-string">'myEmpty'</span>,   {}                               }
+}
+</code></pre>
+<p>By default, <em>sorted</em> chains and chain templates are used, which means one can do the following:</p>
+<pre><code class="hljs css language-lua">MyDecorator.affectedChains = {
+    { <span class="hljs-string">'myCheck'</span>,   
+        { 
+            { checkHandler1, Ranks.LOW }, <span class="hljs-comment">-- using priority rank</span>
+            { checkHandler2, <span class="hljs-number">600000</span>    }, <span class="hljs-comment">-- using priority directly </span>
+            checkHandler3                 <span class="hljs-comment">-- defaults to MEDIUM</span>
+        } 
+    },
 }
 </code></pre>
 <p>The decorator also gets pushed to the <code>myEntityClass.decoratorsList</code> for the further initialization stage.</p>
@@ -126,7 +137,7 @@ entity.decorators[class.name(Decorators.Attackable)]
 <tr><td><code>succeedAction</code></td><td>-</td><td>traversed if an action succeeded</td></tr>
 </tbody>
 </table>
-<p><strong>Shorthand activation</strong>: <code>Entity.executeAction()</code></p>
+<p><strong>Shorthand activation</strong>: <code>Entity:executeAction()</code></p>
 <h3><a class="anchor" aria-hidden="true" id="attackable"></a><a href="#attackable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Attackable</code></h3>
 <p>This decorator enables the entity to take normal hits.</p>
 <table>
@@ -147,9 +158,9 @@ entity.decorators[class.name(Decorators.Attackable)]
 <blockquote>
 <p><code>Entity.die()</code> is the shorthand for <code>Entity.decorators.Killable.activate()</code></p>
 </blockquote>
-<p><strong>Shorthand activation</strong>: <code>Entity.beAttacked()</code></p>
-<p>Also has a function, <code>Attackable.getAttackableness()</code>, which traverses the <code>canBeAttacked</code> chain and return the Attackableness of this entity, which can be NO, YES, IF_CLOSE (TODO: SKIP, for being able to attack through the entity). Default return value: <code>Attackableness.YES</code>.</p>
-<p>This function also has a shorthand activation, <code>Entity.getAttackableness()</code>, which returns <code>Attackableness.NO</code> if the entity has not been decorated with <code>Attackable</code>.</p>
+<p><strong>Shorthand activation</strong>: <code>Entity:beAttacked(action)</code></p>
+<p>Also has a function, <code>Attackable.getAttackableness(actor, attacker)</code>, which traverses the <code>canBeAttacked</code> chain and return the Attackableness of this entity, which can be NO, YES, IF_CLOSE (TODO: SKIP, for being able to attack through the entity). Default return value: <code>Attackableness.YES</code>.</p>
+<p>This function also has a shorthand activation, <code>Entity:getAttackableness(attacker)</code>, which returns <code>Attackableness.NO</code> if the entity has not been decorated with <code>Attackable</code>.</p>
 <h3><a class="anchor" aria-hidden="true" id="attacking"></a><a href="#attacking" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Attacking</code></h3>
 <p>This decorator enables the entity to do normal hits.</p>
 <table>
@@ -161,22 +172,12 @@ entity.decorators[class.name(Decorators.Attackable)]
 <tr><td><code>attack</code></td><td><code>applyAttack</code>, <code>applyPush</code>, <code>applyStatus</code></td><td>Used for doing the Attack and applying push and the related status effects</td></tr>
 </tbody>
 </table>
-<p><strong>Shorthand activation</strong>: <code>Entity.executeAttack()</code></p>
-<h3><a class="anchor" aria-hidden="true" id="attackableonlywhennexttoattacker"></a><a href="#attackableonlywhennexttoattacker" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>AttackableOnlyWhenNextToAttacker</code></h3>
-<p>TODO: THIS ONE IS QUESTIONABLE AND WILL BE REMOVED</p>
-<h3><a class="anchor" aria-hidden="true" id="bumping"></a><a href="#bumping" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Bumping</code></h3>
-<table>
-<thead>
-<tr><th>Added chain</th><th>Automatically added handlers</th><th>Description</th></tr>
-</thead>
-<tbody>
-<tr><td><code>failAction</code></td><td><code>bump</code> (Removed)</td><td></td></tr>
-</tbody>
-</table>
+<p><strong>Shorthand activation</strong>: <code>Entity:executeAttack(action)</code></p>
 <h3><a class="anchor" aria-hidden="true" id="explodable"></a><a href="#explodable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Explodable</code></h3>
 <p>Enables the entity to be exploded</p>
 <h3><a class="anchor" aria-hidden="true" id="invincibleafterhit"></a><a href="#invincibleafterhit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>InvincibleAfterHit</code></h3>
-<p>Makes the entity invincible for 2 loop after it's taken a hit</p>
+<p>TODO: <code>Invincible</code> should be a decorator
+Makes the entity invincible for 2 loop after it's taken a hit</p>
 <h3><a class="anchor" aria-hidden="true" id="diggable"></a><a href="#diggable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Diggable</code></h3>
 <p>Enables the entity to be dug. The wall would take damage on dig equal to dig damage.</p>
 <table>
@@ -202,6 +203,9 @@ entity.decorators[class.name(Decorators.Attackable)]
 <blockquote>
 <p>Currently, the logic by which <code>getTargets</code> works is very similar to that of normal attacking. Thus, these might be merged in some way in the future. This would mean shovels will be of a subclass of Weapon.</p>
 </blockquote>
+<h3><a class="anchor" aria-hidden="true" id="dynamicstats"></a><a href="#dynamicstats" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>DynamicStats</code></h3>
+<p>This decorator adds the possibility to easily initialize with fallbacks to default values, retrieve and modify any stats of your entity.</p>
+<p>This decorator doesn't add any chains, but has a number of useful methods. See <a href="/Dungeon-Hopper-Docs/docs/dynamicstats">Dynamic Stats</a>.</p>
 <h3><a class="anchor" aria-hidden="true" id="killable"></a><a href="#killable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Killable</code></h3>
 <table>
 <thead>
@@ -212,7 +216,7 @@ entity.decorators[class.name(Decorators.Attackable)]
 <tr><td><code>die</code></td><td><code>die</code></td><td>sets <code>entity.dead</code> to <code>true</code> and calls <code>world:removeDead()</code></td></tr>
 </tbody>
 </table>
-<p><strong>Shorthand activation</strong>: <code>Entity.die()</code></p>
+<p><strong>Shorthand activation</strong>: <code>Entity:die()</code></p>
 <h3><a class="anchor" aria-hidden="true" id="moving"></a><a href="#moving" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Moving</code></h3>
 <p>Enables entity to displace.</p>
 <table>
@@ -224,10 +228,10 @@ entity.decorators[class.name(Decorators.Attackable)]
 <tr><td><code>move</code></td><td><code>displace</code></td><td></td></tr>
 </tbody>
 </table>
-<p><strong>Shorthand activation</strong>: <code>Entity.executeMove()</code></p>
+<p><strong>Shorthand activation</strong>: <code>Entity:executeMove(action)</code></p>
 <h3><a class="anchor" aria-hidden="true" id="playercontrol"></a><a href="#playercontrol" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>PlayerControl</code></h3>
 <p>Converts direction to an action for the player</p>
-<p><strong>Shorthand activation</strong>: <code>Player.generateAction()</code>, just for players</p>
+<p><strong>Shorthand activation</strong>: <code>Player:generateAction()</code>, just for players</p>
 <h3><a class="anchor" aria-hidden="true" id="pushable"></a><a href="#pushable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Pushable</code></h3>
 <p>Enables the entity to be pushed</p>
 <table>
@@ -239,11 +243,11 @@ entity.decorators[class.name(Decorators.Attackable)]
 <tr><td><code>executePush</code></td><td><code>executePush</code></td><td></td></tr>
 </tbody>
 </table>
-<p><strong>Shorthand activation</strong>: <code>Entity.bePushed()</code></p>
+<p><strong>Shorthand activation</strong>: <code>Entity:bePushed(action)</code></p>
 <h3><a class="anchor" aria-hidden="true" id="sequential"></a><a href="#sequential" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Sequential</code></h3>
 <p>Enables the entity to calculate their next action. Uses a <code>Sequence</code> object to keep track of the current step.</p>
 <p>The <code>Sequence</code> is instantiated and set on the entity as <code>Entity.sequence</code>.</p>
-<p><strong>Shorthand activation</strong>: <code>Entity.calculateAction()</code></p>
+<p><strong>Shorthand activation</strong>: <code>Entity:calculateAction()</code></p>
 <h3><a class="anchor" aria-hidden="true" id="statused"></a><a href="#statused" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Statused</code></h3>
 <p>Makes the entity vulnerable to status effects. Status effects are being frozen, stunned, on fire, poisoned and so on.</p>
 <table>
@@ -255,7 +259,7 @@ entity.decorators[class.name(Decorators.Attackable)]
 <tr><td><code>applyStatus</code></td><td><code>applyStatus</code></td><td></td></tr>
 </tbody>
 </table>
-<p><strong>Shorthand activation</strong>: <code>Entity.beStatused()</code></p>
+<p><strong>Shorthand activation</strong>: <code>Entity:beStatused(action)</code></p>
 <h3><a class="anchor" aria-hidden="true" id="ticking"></a><a href="#ticking" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Ticking</code></h3>
 <p>Allows the entity to reset some fields at the <code>tick</code> phase.</p>
 <table>
@@ -273,10 +277,10 @@ actor.nextAction = <span class="hljs-literal">nil</span>
 actor.enclosingEvent = <span class="hljs-literal">nil</span>
 </code></pre>
 <p>Update: <code>resetBasic</code> should has been moved to the <code>reset</code> stage instead.</p>
-<p><strong>Shorthand activation</strong>: <code>Entity.tick()</code></p>
+<p><strong>Shorthand activation</strong>: <code>Entity:tick()</code></p>
 <h3><a class="anchor" aria-hidden="true" id="withhp"></a><a href="#withhp" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>WithHP</code></h3>
 <p>Adds an <code>hp</code> object to the player. Makes them <code>takeDamage</code> on activation.</p>
-<p><strong>Shorthand activation</strong>: <code>Entity.takeDamage()</code></p>
+<p><strong>Shorthand activation</strong>: <code>Entity:takeDamage(damage)</code></p>
 <h2><a class="anchor" aria-hidden="true" id="combos"></a><a href="#combos" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Combos</h2>
 <p>As many of the entities would use the same decorators, applying them over and over is error prone and can be simplified. This is why <code>Combos</code> exist.</p>
 <p><code>Combos</code> are essentially functions that apply a predefined set of decorators at once. For example, this:</p>
@@ -318,4 +322,4 @@ decorate(Player, Decorators.PlayerControl)
 decorate(Player, Decorators.WithHP)
 Player.chainTemplate:addHandler(<span class="hljs-string">'action'</span>, PlayerAlgo)
 </code></pre>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/Dungeon-Hopper-Docs/docs/gameloop"><span class="arrow-prev">← </span><span>Game Loop</span></a><a class="docs-next button" href="/Dungeon-Hopper-Docs/docs/action"><span>Action</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a><ul class="toc-headings"><li><a href="#some-new-terminology-on-methods">Some new terminology on methods:</a></li><li><a href="#how-to-use-the-decorators">How to use the decorators</a></li><li><a href="#what-do-decorators-do">What do decorators do?</a></li></ul></li><li><a href="#list-of-basic-decorators">List of basic decorators</a><ul class="toc-headings"><li><a href="#start"><code>Start</code></a></li><li><a href="#acting"><code>Acting</code></a></li><li><a href="#attackable"><code>Attackable</code></a></li><li><a href="#attacking"><code>Attacking</code></a></li><li><a href="#attackableonlywhennexttoattacker"><code>AttackableOnlyWhenNextToAttacker</code></a></li><li><a href="#bumping"><code>Bumping</code></a></li><li><a href="#explodable"><code>Explodable</code></a></li><li><a href="#invincibleafterhit"><code>InvincibleAfterHit</code></a></li><li><a href="#diggable"><code>Diggable</code></a></li><li><a href="#digging"><code>Digging</code></a></li><li><a href="#killable"><code>Killable</code></a></li><li><a href="#moving"><code>Moving</code></a></li><li><a href="#playercontrol"><code>PlayerControl</code></a></li><li><a href="#pushable"><code>Pushable</code></a></li><li><a href="#sequential"><code>Sequential</code></a></li><li><a href="#statused"><code>Statused</code></a></li><li><a href="#ticking"><code>Ticking</code></a></li><li><a href="#withhp"><code>WithHP</code></a></li></ul></li><li><a href="#combos">Combos</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/Dungeon-Hopper-Docs/docs/gameloop"><span class="arrow-prev">← </span><span>Game Loop</span></a><a class="docs-next button" href="/Dungeon-Hopper-Docs/docs/action"><span>Action</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a><ul class="toc-headings"><li><a href="#some-new-terminology-on-methods">Some new terminology on methods:</a></li><li><a href="#how-to-use-the-decorators">How to use the decorators</a></li><li><a href="#what-do-decorators-do">What do decorators do?</a></li></ul></li><li><a href="#list-of-basic-decorators">List of basic decorators</a><ul class="toc-headings"><li><a href="#start"><code>Start</code></a></li><li><a href="#acting"><code>Acting</code></a></li><li><a href="#attackable"><code>Attackable</code></a></li><li><a href="#attacking"><code>Attacking</code></a></li><li><a href="#explodable"><code>Explodable</code></a></li><li><a href="#invincibleafterhit"><code>InvincibleAfterHit</code></a></li><li><a href="#diggable"><code>Diggable</code></a></li><li><a href="#digging"><code>Digging</code></a></li><li><a href="#dynamicstats"><code>DynamicStats</code></a></li><li><a href="#killable"><code>Killable</code></a></li><li><a href="#moving"><code>Moving</code></a></li><li><a href="#playercontrol"><code>PlayerControl</code></a></li><li><a href="#pushable"><code>Pushable</code></a></li><li><a href="#sequential"><code>Sequential</code></a></li><li><a href="#statused"><code>Statused</code></a></li><li><a href="#ticking"><code>Ticking</code></a></li><li><a href="#withhp"><code>WithHP</code></a></li></ul></li><li><a href="#combos">Combos</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>

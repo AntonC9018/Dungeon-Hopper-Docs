@@ -61,12 +61,12 @@
 <li><p>After that, all game objects are asked to decide on their next action, and save it inside them (see <a href="/Dungeon-Hopper-Docs/docs/action">Action</a>). These calculations must not affect the grid (world) state.</p></li>
 <li><p>Now all actions are executed in this order:</p>
 <ol>
-<li><em>Projectiles</em></li>
 <li><em>Player</em> actions</li>
+<li><em>Projectiles</em></li>
 <li>All <em>Reals</em> but player</li>
 <li><em>Explosions</em></li>
+<li><em>Traps</em></li>
 <li><em>Floor</em> hazards</li>
-<li>finally, <em>Traps</em></li>
 </ol></li>
 <li><p>Destroyed (<em>dead</em>) things are filtered out, things are rendered and then <em>reset</em>. <em>Resetting</em> means deleting the actions that the objects chose inside those objects and some other variables for doing those action calculations.</p></li>
 </ol>

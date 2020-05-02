@@ -60,23 +60,32 @@
 <p>A <code>Sequence</code> is basically an array of such steps.</p>
 <h2><a class="anchor" aria-hidden="true" id="step"></a><a href="#step" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Step</h2>
 <p>Step objects describe the action and the next step to do very precicely.</p>
-<h4><a class="anchor" aria-hidden="true" id="properties"></a><a href="#properties" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties</h4>
+<h3><a class="anchor" aria-hidden="true" id="properties"></a><a href="#properties" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties</h3>
 <table>
 <thead>
 <tr><th>Property name (in a config)</th><th>Type</th><th>Description</th></tr>
 </thead>
 <tbody>
 <tr><td>action</td><td>Action</td><td>The action to be used for this step</td></tr>
-<tr><td>movs</td><td>Function</td><td>The movs algorithm</td></tr>
+<tr><td>movs</td><td>Function</td><td>The <img src="/Dungeon-Hopper-Docs/docs/movs" alt="movs"> algorithm</td></tr>
 <tr><td>success</td><td>Number</td><td>The step number if the action succeeds</td></tr>
 <tr><td>fail</td><td>Number</td><td>The step if the action fails</td></tr>
-<tr><td>checkSuccess</td><td>Chain</td><td>The chain passed to check if the action is considered to have succeeded. By default, the chain checks if any action succeedes. TODO: optinally use the index, returned by this chain instead of the <code>success</code> parameter</td></tr>
-<tr><td>enter</td><td>Function</td><td>Executed when the step is selected as the next one</td></tr>
-<tr><td>exit</td><td>Function</td><td>Executed when this step stops being the current step</td></tr>
+<tr><td>checkSuccess</td><td>Chain*</td><td>The chain passed to check if the action is considered to have succeeded.</td></tr>
+<tr><td>enter</td><td>Chain*</td><td>Executed when the step is selected as the next one</td></tr>
+<tr><td>exit</td><td>Chain*</td><td>Executed when this step stops being the current step</td></tr>
 <tr><td>repet</td><td>Number</td><td>Now many times to repeat this step until starting to check success</td></tr>
 </tbody>
 </table>
-<h4><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
+<p>Out of these fields, only the action field must be specified in all steps.</p>
+<h4><a class="anchor" aria-hidden="true" id="chain"></a><a href="#chain" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chain*</h4>
+<p>This can either be a chain, a handler or a list of handlers. If you are providing a list of handlers, however, the chain used is the normal chain, not the sorted one (schain). This is mainly done for optimization purposes.</p>
+<h4><a class="anchor" aria-hidden="true" id="checksuccess"></a><a href="#checksuccess" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>checkSuccess</code></h4>
+<p>This chain is traversed once the entity is <code>ticked</code>, which is the reason why the event passed down the chain has <code>triggerEvent</code> being the tick event. The event actually has the actor set correctly, so you can access the result event for checks as <code>event.actor.enclosingEvent.algoEvent.resultEvent</code>.</p>
+<p>If your handler decides to mark the event successful, set <code>event.success</code> to <code>true</code>. Optionally, you may provide the next step index as <code>event.index</code>. If not specified, the <code>success</code> parameter from config is used instead.</p>
+<h4><a class="anchor" aria-hidden="true" id="enter-and-exit"></a><a href="#enter-and-exit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>enter</code> and <code>exit</code></h4>
+<p>These do not receive their own event, but are passed the tick event directly. It is not recommended that you modify it.</p>
+<p>Similarly, the result event can be accessed via <code>event.actor.enclosingEvent.algoEvent.resultEvent</code>.</p>
+<h3><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
 <p>For example, take a simple skeleton.</p>
 <p>It has 2 steps in its sequence:</p>
 <ol>
@@ -113,10 +122,8 @@ step1 = {
         Action.fromHandlers(
             <span class="hljs-comment">-- the name of the action</span>
             <span class="hljs-string">"TurnToPlayer"</span>, 
-            { 
-                <span class="hljs-comment">-- use a handler, predefined or coded on your own</span>
-                turnToPlayer
-            }
+              <span class="hljs-comment">-- use a handler, predefined or coded on your own</span>
+              turnToPlayer
         ) 
     checkSuccess = 
         <span class="hljs-comment">-- we've gotta chuck a checkOrthogonal function here</span>
@@ -124,7 +131,7 @@ step1 = {
         <span class="hljs-comment">-- are on one line / column</span>
         <span class="hljs-comment">-- for this, we create a custom chain on which we hang that function</span>
         <span class="hljs-comment">-- create a chain that consists of one handler</span>
-        chain: Chain({ checkOrthogonal }),
+        chain: checkOrthogonal,
      <span class="hljs-comment">-- the next step index</span>
     success = <span class="hljs-number">2</span>,
     <span class="hljs-comment">-- in case this fails, e.g. we're frozen, remain at the 1st step</span>
@@ -135,7 +142,7 @@ step2 = {
     <span class="hljs-comment">-- this one is simpler</span>
     action = AttackDigMove,
     <span class="hljs-comment">-- for success we again need a custom chain</span>
-    checkSuccess = Chain({ checkNotMove }),
+    checkSuccess = checkNotMove,
     <span class="hljs-comment">-- in case of moving, do the next step</span>
     success = <span class="hljs-number">3</span>
     <span class="hljs-comment">-- in case frozen, keep rolling</span>
@@ -154,5 +161,5 @@ step3 = {
     success = <span class="hljs-number">1</span> <span class="hljs-comment">-- this and the fail can be omitted, as the sequence loops by default</span>
 }
 </code></pre>
-<p>For a whole code example, see <a href="https://github.com/AntonC9018/Dungeon-Hopper/blob/master/logic/action/sequence/EXAMPLE.lua">this</a></p>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/Dungeon-Hopper-Docs/docs/movs"><span class="arrow-prev">← </span><span>Movs Algorithms</span></a><a class="docs-next button" href="/Dungeon-Hopper-Docs/docs/modifiers"><span>Modifiers</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a></li><li><a href="#step">Step</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>
+<p>For a whole code example, see <a href="https://github.com/AntonC9018/Dungeon-Hopper/blob/master/logic/sequence/EXAMPLE.lua">this</a>.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/Dungeon-Hopper-Docs/docs/movs"><span class="arrow-prev">← </span><span>Movs Algorithms</span></a><a class="docs-next button" href="/Dungeon-Hopper-Docs/docs/modifiers"><span>Modifiers</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a></li><li><a href="#step">Step</a><ul class="toc-headings"><li><a href="#properties">Properties</a></li><li><a href="#example">Example</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>

@@ -126,9 +126,62 @@ chain:pass(event)
 </code></pre>
 <p>So, once <code>event.propagate</code> turns false, it will stop the propagation of the event, that is, the handlers after the one that made the stop condition be satisfied won't be executed.</p>
 <h3><a class="anchor" aria-hidden="true" id="the-order-of-execution"></a><a href="#the-order-of-execution" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The order of execution</h3>
-<p>This feature is reserved for later and not yet implemented. This would be good to have, though.</p>
-<p>Basically, each of the handlers should have a priority number and each time the chain is to be traversed, the handlers are to be sorted by priority.</p>
-<p>This feature may fix future bugs like a ring that e.g. gives you temporary damage immunity proccing while the character is invincible.</p>
+<p>There is a special version of chains called <em>Sorted Chains</em> or, simply, <em>schains</em>. These store handlers with priority numbers and sort them based on those numbers on each traversal. This version of chains is by default available globally throughout the project as <code>Chain</code>. If you wish to use the normal version of chains, require it:</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> Chain = <span class="hljs-built_in">require</span> <span class="hljs-string">'lib.chains.chain'</span>
+<span class="hljs-comment">-- if you wish to use both or emphasize the fact that </span>
+<span class="hljs-comment">-- you're using the sorted version, you may include it too</span>
+<span class="hljs-keyword">local</span> SChain = <span class="hljs-built_in">require</span> <span class="hljs-string">'lib.chains.schain'</span> 
+</code></pre>
+<p>Same goes for <em>Chain Template</em> and <em>Sorted Chain Template</em>.</p>
+<h4><a class="anchor" aria-hidden="true" id="ranks"></a><a href="#ranks" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ranks</h4>
+<p>There are four predefined <em>ranks</em>: <code>HIGHEST</code>, <code>HIGH</code>, <code>MEDIUM</code>, <code>LOW</code>, <code>LOWEST</code>. To use the ranks enum, require it:</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> Ranks = <span class="hljs-built_in">require</span> <span class="hljs-string">'lib.chains.ranks'</span>
+</code></pre>
+<p>The handlers will be executed in order from highest to lowest.</p>
+<pre><code class="hljs css language-lua">chain:addHandler({ h1, Ranks.LOW     })
+chain:addHandler({ h2, Ranks.HIGHEST })
+<span class="hljs-comment">-- although h2 was added after h1, it will be executed before h1</span>
+</code></pre>
+<p>If you're adding new handlers without specifying the ranks, they will end up in the medium rank.</p>
+<pre><code class="hljs css language-lua"><span class="hljs-comment">-- this:</span>
+chain:addHandler({ myHandler, Ranks.MEDIUM })
+
+<span class="hljs-comment">-- is equivalent to this:</span>
+chain:addHandler(myHandler)
+</code></pre>
+<p>The handlers added to the same rank are always executed in the order they were added.</p>
+<pre><code class="hljs css language-lua">chain:addHandler({ h1, Ranks.MEDIUM })
+chain:addHandler({ h2, Ranks.MEDIUM })
+<span class="hljs-comment">-- h1 is always executed before h2</span>
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="ranks-to-numbers-conversion"></a><a href="#ranks-to-numbers-conversion" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ranks to Numbers conversion</h4>
+<p>Under the hood, ranks are mapped to priority <em>numbers</em>, which are plain integers. They are stored in the <code>Numbers.rankMap</code> enum, and stuff like this is also possible:</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> Numbers = <span class="hljs-built_in">require</span> <span class="hljs-string">'lib.chains.numbers'</span>
+<span class="hljs-keyword">local</span> Ranks = <span class="hljs-built_in">require</span> <span class="hljs-string">'lib.chains.ranks'</span>
+
+chain:addHandler({ h1, Ranks.Medium })
+chain:addHandler({ h2, Numbers.rankMap[Ranks.Medium] + <span class="hljs-number">1</span> })
+<span class="hljs-comment">-- h2 will be executed just before h1</span>
+</code></pre>
+<p>Under the hood, when you add handlers to the same rank, their priority numbers are decremented with each new handler.</p>
+<pre><code class="hljs css language-lua">chain:addHandler({ h1, Ranks.LOW }) <span class="hljs-comment">-- maps to 200000 (Numbers.rankMap[Ranks.LOW] == 200000)</span>
+chain:addHandler({ h2, Ranks.LOW }) <span class="hljs-comment">-- maps to 199995</span>
+chain:addHandler({ h3, Ranks.LOW }) <span class="hljs-comment">-- maps to 199990</span>
+
+<span class="hljs-comment">-- the other ranks are unaffected</span>
+chain:addHandler({ h4, Ranks.MEDIUM }) <span class="hljs-comment">-- still 300000</span>
+chain:addHandler({ h5, Ranks.HIGH   }) <span class="hljs-comment">-- still 400000</span>
+
+<span class="hljs-comment">-- other chain instances are intact too</span>
+anotherChain:addHandler({ h6, Ranks.LOW }) <span class="hljs-comment">-- maps to 200000</span>
+</code></pre>
+<blockquote>
+<p>NOTE: The priority numbers are not restored once a handler is removed.</p>
+</blockquote>
+<p>Techinically, you may use floats, but you are recommended to use integers.</p>
+<h4><a class="anchor" aria-hidden="true" id="why-is-it-useful"></a><a href="#why-is-it-useful" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Why is it useful?</h4>
+<p>For example, the water tile prevents attacks, digs and moves by placing a high-priority handler that blocks the propagation of the event on the corresponding <code>do</code> chains: <code>attack</code>, <code>dig</code> and <code>move</code>. It must place the handler onto the <code>do</code> chain, since the tried action should succeed so that we don't have a situation like: the entity tried to attack -&gt; it did not succeed because of being submerged -&gt; the entity is getting unstuck, that is, the submerge handlers are removed -&gt; the entity tries the next handler in the action chain, that is, tries to move, since the attack weren't successful. The moving succeeds, which is not what should've happened. By having the handler be of high priority, we guarantee that no other action will be tried, since the attack is considered successful.</p>
+<p>Another example would be a ring that is destroyed if the player is about to take damage and prevents the damage. Such a ring would have low or lowest priority so that it is broken after all other damage reducers have had their turn at diminishing attack damage.</p>
 <h2><a class="anchor" aria-hidden="true" id="chain-templates"></a><a href="#chain-templates" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chain Templates</h2>
 <h3><a class="anchor" aria-hidden="true" id="overview"></a><a href="#overview" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h3>
 <p>Chain templates offer a way of planning out a standart structure of a set of chains.</p>

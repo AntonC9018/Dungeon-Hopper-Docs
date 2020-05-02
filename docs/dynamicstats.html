@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Dynamic Stats · Dungeon Hopper</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="This is a decorator which adds the possibility to easily initialize with fallbacks to default values, retrieve and modify any stats of your entity."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Dynamic Stats · Dungeon Hopper"/><meta property="og:type" content="website"/><meta property="og:url" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/"/><meta property="og:description" content="This is a decorator which adds the possibility to easily initialize with fallbacks to default values, retrieve and modify any stats of your entity."/><meta property="og:image" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/Dungeon-Hopper-Docs/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/Dungeon-Hopper-Docs/js/scrollSpy.js"></script><link rel="stylesheet" href="/Dungeon-Hopper-Docs/css/main.css"/><script src="/Dungeon-Hopper-Docs/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/Dungeon-Hopper-Docs/"><img class="logo" src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper"/><h2 class="headerTitleWithLogo">Dungeon Hopper</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/Dungeon-Hopper-Docs/docs/start" target="_self">Docs</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Dynamic Stats</h1></header><article><div><span><p>This is a decorator which adds the possibility to easily initialize with fallbacks to default values, retrieve and modify any stats of your entity.</p>
+<h1><a class="anchor" aria-hidden="true" id="methods"></a><a href="#methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h1>
+<p>This decorator doesn't add any chains, but has a number of useful methods.</p>
+<h2><a class="anchor" aria-hidden="true" id="dynamicstatsactivatestatindex"></a><a href="#dynamicstatsactivatestatindex" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>DynamicStats:activate(statIndex)</code></h2>
+<p>Used to retrieve a stat. <strong>Shorthand activation:</strong> <code>Entity:getStat(statIndex)</code>.
+This function may return an <code>Effect</code>, a <code>Stats</code> object or a <code>Number</code>, depending on the stat.
+Here's a list of all predefined stats (may be extended by modules):</p>
+<table>
+<thead>
+<tr><th>Name</th><th>Modifier looked up</th><th>Returned as</th><th>Fields: Name(defaultValue)</th></tr>
+</thead>
+<tbody>
+<tr><td>Attack</td><td>attack</td><td>Effect (Attack)</td><td>damage(0), pierce(0)</td></tr>
+<tr><td>Push</td><td>push</td><td>Effect (Push)</td><td>power(0), distance(1)</td></tr>
+<tr><td>Dig</td><td>dig</td><td>Effect (Dig)</td><td>damage(0), power(0)</td></tr>
+<tr><td>Move</td><td>move</td><td>Effect (Move)</td><td>distance(1), through(<code>false</code>)</td></tr>
+<tr><td>Status</td><td>status</td><td>Stats</td><td>None for now</td></tr>
+<tr><td>AttackRes</td><td>resistance</td><td>Stats</td><td>armor(0), pierce(0), maxDamage(<code>math.huge</code>), minDamage(1)</td></tr>
+<tr><td>PushRes</td><td>resistance</td><td>Number</td><td>1</td></tr>
+<tr><td>DigRes</td><td>resistance</td><td>Number</td><td>1</td></tr>
+<tr><td>StatusRes</td><td>resistance</td><td>Stats</td><td>None for now</td></tr>
+</tbody>
+</table>
+<h3><a class="anchor" aria-hidden="true" id="examples"></a><a href="#examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples:</h3>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> StatTypes = <span class="hljs-built_in">require</span>(<span class="hljs-string">'logic.decorators.dynamicstats'</span>).StatTypes
+ 
+<span class="hljs-keyword">local</span> attack = entity:getStat(StatTypes.Attack)
+<span class="hljs-comment">-- attack.damage, attack.pierce</span>
+
+<span class="hljs-keyword">local</span> push = entity:getStat(StatTypes.Push)
+<span class="hljs-comment">-- push.power, push.distance</span>
+<span class="hljs-comment">-- also, you can use push:toMove(direction)</span>
+
+<span class="hljs-keyword">local</span> move = entity:getStat(StatTypes.Move)
+<span class="hljs-comment">-- move.distance, move.through</span>
+<span class="hljs-comment">-- you can use move:toPos(grid, target)</span>
+
+<span class="hljs-keyword">local</span> attackRes = entity:getStat(StatTypes.AttackRes)
+<span class="hljs-comment">-- now you can do</span>
+attackRes:get(<span class="hljs-string">'armor'</span>) <span class="hljs-comment">-- 0, by default</span>
+attackRes:set(<span class="hljs-string">'armor'</span>, <span class="hljs-number">1</span>)
+attackRes:get(<span class="hljs-string">'armor'</span>) <span class="hljs-comment">-- 1</span>
+attackRes:add(<span class="hljs-string">'pierce'</span>, <span class="hljs-number">1</span>) <span class="hljs-comment">-- increment pierce</span>
+
+
+<span class="hljs-keyword">local</span> digRes = entity:getStat(StatTypes.DigRes)
+<span class="hljs-comment">-- digRes is a number, 1 by default</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="dynamicstatssetstatstatindex-statname-or-statsobject-or-amount-newamount"></a><a href="#dynamicstatssetstatstatindex-statname-or-statsobject-or-amount-newamount" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>DynamicStats:setStat(statIndex, statName or statsObject or amount*, ?newAmount)</code></h2>
+<p>Used to reset a particular stat to the particular amount. <strong>Shorthand function:</strong> <code>Entity:setStat(...)</code>.</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> StatTypes = <span class="hljs-built_in">require</span>(<span class="hljs-string">'logic.decorators.dynamicstats'</span>).StatTypes
+
+<span class="hljs-comment">-- set attackRes.armor to 2</span>
+<span class="hljs-comment">-- statName == 'armor', newAmount = 2</span>
+entity:setStat(StatTypes.AttackRes, <span class="hljs-string">'armor'</span>, <span class="hljs-number">2</span>)
+
+<span class="hljs-comment">-- set pushRes to 0</span>
+<span class="hljs-comment">-- amount* == 0</span>
+<span class="hljs-comment">-- can be used only if the value is returned as a number</span>
+entity:setStat(StatTypes.PushRes, <span class="hljs-number">0</span>)
+
+<span class="hljs-comment">-- set attack damage to 1</span>
+entity:setStat(StatTypes.Attack, <span class="hljs-string">'damage'</span>, <span class="hljs-number">1</span>)
+
+<span class="hljs-comment">-- decrement all statuses</span>
+<span class="hljs-keyword">local</span> <span class="hljs-built_in">status</span> = entity:getStat(StatTypes.Status)
+<span class="hljs-built_in">status</span>:decrement()
+entity:setStat(StatTypes.Status, <span class="hljs-built_in">status</span>)
+
+<span class="hljs-comment">-- increment attack damage by 1</span>
+<span class="hljs-keyword">local</span> attack = entity:getStat(StatTypes.Attack)
+entity:setStat(StatTypes.Attack, <span class="hljs-string">'damage'</span>, attack.damage + <span class="hljs-number">1</span>)
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="dynamicstatsaddhandlerstatindex-handler-and-dynamicstatsremovehandlerstatindex-handler"></a><a href="#dynamicstatsaddhandlerstatindex-handler-and-dynamicstatsremovehandlerstatindex-handler" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>DynamicStats:addHandler(statIndex, handler)</code> and <code>DynamicStats:removeHandler(statIndex, handler)</code></h2>
+<p>For each of the stat types, a chain is created. By default, these chains are empty.
+The chains can be employed to implement a more complex logic, rather than just updating stats. For updating stats, use <code>Entity:setStat()</code> instead.</p>
+<p>This function is less common, so it lacks a shorthand function on <code>Entity</code>.</p>
+<h3><a class="anchor" aria-hidden="true" id="heres-a-contrived-example"></a><a href="#heres-a-contrived-example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Here's a contrived example.</h3>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> StatTypes = <span class="hljs-built_in">require</span>(<span class="hljs-string">'logic.decorators.dynamicstats'</span>).StatTypes
+<span class="hljs-keyword">local</span> dynamicStats = entity.decorators.dynamicStats
+
+<span class="hljs-keyword">local</span> handler = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span></span>
+      <span class="hljs-comment">-- check if a weapon is equipped. </span>
+      <span class="hljs-comment">-- up the attack by 5 in this case.</span>
+      <span class="hljs-keyword">if</span> event.actor.weapon ~= <span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span>
+          <span class="hljs-comment">-- note that the attack is set on `event.stats` and not `event.attack`</span>
+          event.stats.damage = event.stats.damage + <span class="hljs-number">5</span>
+      <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span> 
+
+dynamicStats:addHandler(StatTypes.Attack, handler)
+
+entity:setStat(StatTypes.Attack, <span class="hljs-string">'damage'</span>, <span class="hljs-number">0</span>)
+<span class="hljs-keyword">local</span> damage
+
+entity.weapon = <span class="hljs-number">1</span>
+damage = entity:getStat(StatTypes.Attack).damage
+<span class="hljs-comment">-- damage is 0</span>
+
+entity.weapon = <span class="hljs-literal">nil</span>
+damage = entity:getStat(StatTypes.Attack).damage
+<span class="hljs-comment">-- damage is 5</span>
+
+dynamicStats:removeHandler(StatTypes.Attack, handler)
+
+damage = entity:getStat(StatTypes.Attack).damage
+<span class="hljs-comment">-- damage is 0 again</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="dynamicstatsregisterstatname-config-howtoreturn"></a><a href="#dynamicstatsregisterstatname-config-howtoreturn" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>DynamicStats.registerStat(name, config, howToReturn)</code></h2>
+<p>In short, dynamic stats keeps all stats in three config objects:</p>
+<ol>
+<li><code>StatConfigs</code>, which keeps track of what properties are returned on stat request;</li>
+<li><code>StatTypes</code>, which maps name of a stat to the index in <code>StatConfig</code> array;</li>
+<li><code>HowToReturn</code>, which can be:
+<ol>
+<li><code>EFFECT</code>, which would treat <em>the second entry in the config</em> as an <code>Effect</code> constructor and will return stats wrapped with that constructor;</li>
+<li><code>STATS</code> which would treat it as an array of individual stats;</li>
+<li><code>NUMBER</code>, which would treat it as numbers.</li>
+</ol></li>
+</ol>
+<p>This function adds the specified stat in all entities that are decorated with the <code>DynamicStats</code> constructor.</p>
+<h3><a class="anchor" aria-hidden="true" id="examples-1"></a><a href="#examples-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h3>
+<h4><a class="anchor" aria-hidden="true" id="with-effect"></a><a href="#with-effect" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>With effect:</h4>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> SampleEffect = class(<span class="hljs-string">'SampleEffect'</span>, Effects)
+SampleEffect.modifiers = {
+    { <span class="hljs-string">'field1'</span>, <span class="hljs-number">0</span> }, <span class="hljs-comment">-- default value is 0</span>
+    { <span class="hljs-string">'field2'</span>, <span class="hljs-number">8</span> }  <span class="hljs-comment">-- default value is 8</span>
+}
+<span class="hljs-comment">-- Sample indicates that the stats will be stored in </span>
+<span class="hljs-comment">-- a special for `sample` stats object </span>
+<span class="hljs-comment">-- and are assumed to optionally be overriden via </span>
+<span class="hljs-comment">-- `Entity.baseModifiers.sample` field</span>
+<span class="hljs-keyword">local</span> effectConfig = { <span class="hljs-string">'sample'</span>, SampleEffect }
+
+<span class="hljs-comment">-- get the decorator itself</span>
+<span class="hljs-keyword">local</span> DynamicStats = <span class="hljs-built_in">require</span> <span class="hljs-string">'logic.decorators.dynamicstats'</span>
+<span class="hljs-keyword">local</span> HowToReturn = <span class="hljs-built_in">require</span> <span class="hljs-string">'logic.decorators.stats.howtoreturn'</span>
+<span class="hljs-keyword">local</span> StatTypes = DynamicStats.StatTypes
+<span class="hljs-comment">-- register the new stat</span>
+DynamicStats.registerStat(
+    <span class="hljs-string">'Sample'</span>, 
+    SampleEffect, 
+    <span class="hljs-comment">-- since we want to wrap it in a custom effect</span>
+    HowToReturn.Effect
+)
+
+<span class="hljs-comment">-- assume FooBar is a subclass of Entity decorated with DynamicStats</span>
+<span class="hljs-keyword">local</span> entity = FooBar()
+<span class="hljs-keyword">local</span> sample = entity:getStat(StatTypes.Sample)
+<span class="hljs-comment">-- sample.field1 == 0, sample.field2 == 8</span>
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="with-stats"></a><a href="#with-stats" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>With stats:</h4>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> SampleModifier = {
+    { <span class="hljs-string">'field1'</span>, <span class="hljs-number">0</span> }, <span class="hljs-comment">-- default value is 0</span>
+    { <span class="hljs-string">'field2'</span>, <span class="hljs-number">8</span> }  <span class="hljs-comment">-- default value is 8</span>
+}
+
+<span class="hljs-keyword">local</span> effectConfig = { <span class="hljs-string">'sample'</span>, SampleModifier }
+
+<span class="hljs-comment">-- get the decorator itself</span>
+<span class="hljs-keyword">local</span> DynamicStats = <span class="hljs-built_in">require</span> <span class="hljs-string">'logic.decorators.dynamicstats'</span>
+<span class="hljs-keyword">local</span> HowToReturn = <span class="hljs-built_in">require</span> <span class="hljs-string">'logic.decorators.stats.howtoreturn'</span>
+<span class="hljs-keyword">local</span> StatTypes = DynamicStats.StatTypes
+<span class="hljs-comment">-- register the new stat</span>
+DynamicStats.registerStat(
+    <span class="hljs-string">'Sample'</span>, 
+    SampleModifier, 
+    <span class="hljs-comment">-- since we want to return it as Stats</span>
+    HowToReturn.Stats
+)
+
+<span class="hljs-comment">-- assume FooBar is a subclass of Entity decorated with DynamicStats</span>
+<span class="hljs-keyword">local</span> entity = FooBar()
+<span class="hljs-keyword">local</span> sample = entity:getStat(StatTypes.Sample)
+<span class="hljs-comment">-- sample:get('field1') == 0, sample:get('field2') == 8</span>
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="with-number"></a><a href="#with-number" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>With Number:</h4>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> SampleModifier = { <span class="hljs-string">'field1'</span>, <span class="hljs-number">5</span> }
+<span class="hljs-keyword">local</span> effectConfig = { <span class="hljs-string">'sample'</span>, SampleModifier }
+
+<span class="hljs-comment">-- get the decorator itself</span>
+<span class="hljs-keyword">local</span> DynamicStats = <span class="hljs-built_in">require</span> <span class="hljs-string">'logic.decorators.dynamicstats'</span>
+<span class="hljs-keyword">local</span> HowToReturn = <span class="hljs-built_in">require</span> <span class="hljs-string">'logic.decorators.stats.howtoreturn'</span>
+<span class="hljs-keyword">local</span> StatTypes = DynamicStats.StatTypes
+<span class="hljs-comment">-- register the new stat</span>
+DynamicStats.registerStat(
+    <span class="hljs-string">'Sample'</span>, 
+    SampleModifier, 
+    HowToReturn.Number
+)
+
+<span class="hljs-comment">-- assume FooBar is a subclass of Entity decorated with DynamicStats</span>
+<span class="hljs-keyword">local</span> entity = FooBar()
+<span class="hljs-keyword">local</span> sample = entity:getStat(StatTypes.Sample)
+<span class="hljs-comment">-- sample == 5</span>
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="with-basemodifiers"></a><a href="#with-basemodifiers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>With baseModifiers:</h4>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> SampleEntity = class(<span class="hljs-string">'SampleEntity'</span>, Entity)
+
+<span class="hljs-comment">-- ...</span>
+<span class="hljs-comment">-- Assume DynamicStats from the previous example with number</span>
+<span class="hljs-comment">-- decorate with DynamicStats and other decorators</span>
+<span class="hljs-comment">-- ...</span>
+
+SampleEntity.baseModifiers = {
+    sample = {
+        field1 = <span class="hljs-number">2</span>
+    }
+}
+
+<span class="hljs-comment">-- instantiate the new class</span>
+<span class="hljs-keyword">local</span> entity = SampleEntity()
+
+<span class="hljs-keyword">local</span> sample = entity:getStat(StatTypes.Sample)
+<span class="hljs-comment">-- sample == 2</span>
+<span class="hljs-comment">-- if we try this with any other entity that did not define</span>
+<span class="hljs-comment">-- an override value in `baseModifiers`, the result will be </span>
+<span class="hljs-comment">-- the default value, 5 in this case</span>
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#dynamicstatsactivatestatindex"><code>DynamicStats:activate(statIndex)</code></a><ul class="toc-headings"><li><a href="#examples">Examples:</a></li></ul></li><li><a href="#dynamicstatssetstatstatindex-statname-or-statsobject-or-amount-newamount"><code>DynamicStats:setStat(statIndex, statName or statsObject or amount*, ?newAmount)</code></a></li><li><a href="#dynamicstatsaddhandlerstatindex-handler-and-dynamicstatsremovehandlerstatindex-handler"><code>DynamicStats:addHandler(statIndex, handler)</code> and <code>DynamicStats:removeHandler(statIndex, handler)</code></a><ul class="toc-headings"><li><a href="#heres-a-contrived-example">Here's a contrived example.</a></li></ul></li><li><a href="#dynamicstatsregisterstatname-config-howtoreturn"><code>DynamicStats.registerStat(name, config, howToReturn)</code></a><ul class="toc-headings"><li><a href="#examples-1">Examples</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>
