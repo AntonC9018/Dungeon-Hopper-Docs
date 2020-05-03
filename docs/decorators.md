@@ -21,9 +21,10 @@ Decorators are used extensively throughout the project. They act pretty much lik
 Assume you have an entity class you'd like to decorate. For that, just do the following:
 ```lua
 local Decorators = require "logic.decorators.decorators"
-local Decorator = require "logic.decorators.decorator"
-Decorators.Start(MyEntity)                 -- create the chain template on that object
-Decorator.decorate(MyEntity, MyDecorator)  -- add stuff to that template, add stuff to your entity
+local decorate = require("logic.decorators.decorator").decorate
+Decorators.Start(MyEntity)                -- create the chain template on that object
+decorate(MyEntity, MyDecorator)           -- add stuff to that template, add stuff to your entity
+decorate(MyEntity, Decorators.Attackable) -- apply a predefined decorator
 ```
 > NOTE: You cannot decorate instances! You can apply the decorators only to classes!
 > So, in order to, e.g., stop your entities from taking damage while they are in some phase of their lifecycle, use some other logic, e.g. adding handlers to chains. 
@@ -41,7 +42,7 @@ They all share these 3 basic stages
 
 This is the moment the `Decorator.decorate` method is called. It works by taking the list of `affectedChains` from the decorator class and adding them to the `chainTemplate` of your entity class. 
 
-For example, such chains would create a chain named `myCheck` on the entity class's `chainTemplate` and add the handlers `checkHandler1` and `checkHandler2` onto it. After that, it would create the chain `myExecute`, adding just the `executeHandler1` to it and, finally, it would just create the new `myEmpty` chain on the `chainTemplate`, without adding any handler onto it:
+For example, such chains would create a chain named `myCheck` on the entity class's `chainTemplate` and add the handlers `checkHandler1` and `checkHandler2` onto it. After that, it would create the chain `myExecute`, adding just the `executeHandler1` onto it and, finally, it would just create the new `myEmpty` chain on the `chainTemplate`, without adding any handler onto it:
 ```lua
 MyDecorator.affectedChains = {
     { 'myCheck',   { checkHandler1, checkHandler2 } },
@@ -70,7 +71,7 @@ The decorator also gets pushed to the `myEntityClass.decoratorsList` for the fur
 The initialization stage takes place when your entity class is being instantiated. At this time, all Decorators saved on `myEntityClass.decoratorsList` are getting instantiated and their `myDecorator:__construct()` methods called. This is the moment they should instantiate things on the instance, if they need to. The decorator instances are saved on `entity.decorators` (`entity` here being your instantiated `myEntityClass`), which is a table where the keys are the names of the applied decorator classes. For example, to access the `Attackable` decorator instance, one would do:
 ```lua
 entity.decorators.Attackable
--- or even better
+-- This also works
 entity.decorators[class.name(Decorators.Attackable)]
 ```
 This is useful for checking whether a specific decorator has been applied, although you are encouraged to use `entity:isDecorated(decorator)` if you are just checking.
@@ -124,7 +125,7 @@ This decorator enables the entity to take normal hits.
 |-------------|------------------------------| ----------- |
 | `defence`   | Reduction by base armor      | This chain is traversed when your entity is about to take damage. These methods mild or amplify effects of the attack. |
 | `beHit`     | `takeHit`, `die`             | Handlers of this chain are traversed after a hit has been assured to come through by the `defence` chain.  |
-| `canBeAttacked` | | |
+| `attackableness` | | |
 
 `takeHit` does damage to you (without applying status effects and pushing, see `Pushable` and `Statused` for that). 
 > `Entity.takeHit()` is the shorthand for `Entity.decorators.WithHP.activate()` 
@@ -134,7 +135,7 @@ This decorator enables the entity to take normal hits.
 
 **Shorthand activation**: `Entity:beAttacked(action)`
 
-Also has a function, `Attackable.getAttackableness(actor, attacker)`, which traverses the `canBeAttacked` chain and return the Attackableness of this entity, which can be NO, YES, IF_CLOSE (TODO: SKIP, for being able to attack through the entity). Default return value: `Attackableness.YES`. 
+Also has a function, `Attackable.getAttackableness(actor, attacker)`, which traverses the `attackableness` chain and return the Attackableness of this entity, which can be NO, YES, IF_CLOSE or SKIP (think ghosts). Default return value: `Attackableness.YES`. 
 
 This function also has a shorthand activation, `Entity:getAttackableness(attacker)`, which returns `Attackableness.NO` if the entity has not been decorated with `Attackable`.
 

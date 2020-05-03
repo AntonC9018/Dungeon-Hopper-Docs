@@ -57,7 +57,7 @@ local digRes = entity:getStat(StatTypes.DigRes)
 -- digRes is a number, 1 by default
 ```
 
-## `DynamicStats:setStat(statIndex, statName or statsObject or amount*, ?newAmount)`
+## `DynamicStats:setStat(statIndex, ...)`
 
 Used to reset a particular stat to the particular amount. **Shorthand function:** `Entity:setStat(...)`.
 
@@ -77,13 +77,43 @@ entity:setStat(StatTypes.PushRes, 0)
 entity:setStat(StatTypes.Attack, 'damage', 1)
 
 -- decrement all statuses
-local status = entity:getStat(StatTypes.Status)
+-- getStatRaw() returns stats without traversing handlers
+local status = entity.decorators.DynamicStats:getStatRaw(StatTypes.Status)
 status:decrement()
 entity:setStat(StatTypes.Status, status)
 
 -- increment attack damage by 1
 local attack = entity:getStat(StatTypes.Attack)
 entity:setStat(StatTypes.Attack, 'damage', attack.damage + 1)
+```
+
+## `DynamicStats:addStat(statIndex, ...)`
+
+Works the same way as the `setStat` method, except it adds the specified amount/stats to the existing stats instead of resetting the selected stat values.
+
+```lua
+local StatTypes = require('logic.decorators.dynamicstats').StatTypes
+local dynamicStats = entity.decorators.dynamicStats
+
+dynamicStats:setStat(StatTypes.Attack, 'damage', 1)
+dynamicStats:getStat(StatTypes.Attack) -- damage == 1
+
+dynamicStats:addStat(StatTypes.Attack, 'damage', 1)
+dynamicStats:getStat(StatTypes.Attack) -- damage == 2
+
+local stats = Stats.fromTable({ damage = 5 })
+
+-- Addition
+dynamicStats:addStat(StatTypes.Attack, stats)
+dynamicStats:getStat(StatTypes.Attack) -- damage == 7
+
+-- Subtraction
+dynamicStats:addStat(StatTypes.Attack, -stats)
+dynamicStats:getStat(StatTypes.Attack) -- damage == 2
+
+-- Be careful, as it can get below 0 this way
+dynamicStats:addStat(StatTypes.Attack, -stats)
+dynamicStats:getStat(StatTypes.Attack) -- damage == -3
 ```
 
 ## `DynamicStats:addHandler(statIndex, handler)` and `DynamicStats:removeHandler(statIndex, handler)`
@@ -126,6 +156,36 @@ dynamicStats:removeHandler(StatTypes.Attack, handler)
 damage = entity:getStat(StatTypes.Attack).damage
 -- damage is 0 again
 ```
+
+## `DynamicStats:getStatRaw(statIndex)`
+
+Get the stat without a pass through the chain of this stat. Always returns a `Stats` object.
+
+```lua
+-- Consider the handler from the previous example.
+
+entity.weapon = nil
+local damage = entity:getStat(StatTypes.Attack).damage
+-- damage is 5
+
+-- returns the attack as stored internally, i.e. as a Stats object
+local attackStats = dynamicStats:getStatRaw(StatTypes.Attack)
+
+local damage = attackStats:get('damage')
+-- damage is 0
+```
+
+If the same `Stats` object is internally used to store multiple stats, in other words, if multiple stats reference the same modifier, it is returned in its entirety as a `Stats` object.
+
+```lua
+local resistances = dynamicStats:getStatRaw(StatTypes.AttackRes)
+
+local pushRes = resistances:get('push')
+local armor   = resistances:get('armor')
+local digRes  = resistances:get('dig')
+-- ...
+```
+
 
 ## `DynamicStats.registerStat(name, config, howToReturn)`
 
