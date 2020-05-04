@@ -117,4 +117,65 @@
 suTinker.tink()   <span class="hljs-comment">-- the function output by generator gets onto the chain</span>
 suTinker.untink() <span class="hljs-comment">-- the function output by generator is taken off the chain</span>
 </code></pre>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/Dungeon-Hopper-Docs/docs/retouchers"><span class="arrow-prev">← </span><span>Retouchers</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#terminology">Terminology</a></li><li><a href="#example">Example</a></li><li><a href="#selfuntinkingtinker">SelfUntinkingTinker</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>
+<h2><a class="anchor" aria-hidden="true" id="reftinker"></a><a href="#reftinker" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RefTinker</h2>
+<p>A more useful version of the <code>SelfUntinkingTinker</code> is the <code>RefTinker</code>, which means tinker with self reference.</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> RefTinker = <span class="hljs-built_in">require</span> <span class="hljs-string">'logic.tinkers.reftinker'</span>
+
+<span class="hljs-comment">-- it is given a list of { chainName, handler or { handler, priority } }</span>
+<span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">generator</span><span class="hljs-params">(tinker)</span></span>
+    <span class="hljs-keyword">return</span> 
+    {
+        { 
+            <span class="hljs-string">'move'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span></span>
+                <span class="hljs-built_in">print</span>(<span class="hljs-string">"Hello"</span>)
+                tinker:untink(event.actor)
+            <span class="hljs-keyword">end</span>
+        },
+        {
+            <span class="hljs-string">'attack'</span>, {
+                <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span></span>
+                    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Hello"</span>)
+                    tinker:untink(event.actor)
+                <span class="hljs-keyword">end</span>,
+                Ranks.HIGH
+            }
+        }
+    }
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">local</span> refTinker = RefTinker(generator)
+refTinker:tink(entity)
+</code></pre>
+<p>If you want to define functions separately, use generators for those functions. I think this is the only way to make definitions less ugly and closures are the only way of getting a reference to the tinker inside the handlers (contact me if you know any other).</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> RefTinker = <span class="hljs-built_in">require</span> <span class="hljs-string">'logic.tinkers.reftinker'</span>
+
+<span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testGenerator</span><span class="hljs-params">(tinker)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span></span>
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"Hello"</span>)
+        tinker:untink(event.actor)
+    <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testGenerator2</span><span class="hljs-params">(tinker)</span></span>
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span></span>
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">"Hello"</span>)
+            tinker:untink(event.actor)
+        <span class="hljs-keyword">end</span>,
+        Ranks.HIGH
+    }
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">generator</span><span class="hljs-params">(tinker)</span></span>
+    <span class="hljs-keyword">return</span> 
+    {
+        { <span class="hljs-string">'move'</span>,   testGenerator(tinker)  },
+        { <span class="hljs-string">'attack'</span>, testGenerator2(tinker) }
+    }
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">local</span> refTinker = RefTinker(generator)
+refTinker:tink(entity)
+</code></pre>
+<p>Similarly, a version for stats also exists and is called <code>RefStatTinker</code>.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/Dungeon-Hopper-Docs/docs/retouchers"><span class="arrow-prev">← </span><span>Retouchers</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#terminology">Terminology</a></li><li><a href="#example">Example</a></li><li><a href="#selfuntinkingtinker">SelfUntinkingTinker</a></li><li><a href="#reftinker">RefTinker</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>
