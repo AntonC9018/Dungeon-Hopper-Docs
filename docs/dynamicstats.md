@@ -6,14 +6,14 @@ title: Dynamic Stats
 This is a decorator which adds the possibility to easily initialize with fallbacks to default values, retrieve and modify any stats of your entity.
 
 
-# Methods
+## Methods
 
 This decorator doesn't add any chains, but has a number of useful methods.
 
 
-## `activate(statIndex)`
+### `getStat(statIndex)`
 
-Used to retrieve a stat. **Shorthand activation:** `Entity:getStat(statIndex)`.
+Used to retrieve a stat. **Shorthand function:** `Entity:getStat(statIndex)`.
 This function may return an `Effect`, a `Stats` object or a `Number`, depending on the stat.
 Here's a list of all predefined stats (may be extended by modules):
 
@@ -25,11 +25,12 @@ Here's a list of all predefined stats (may be extended by modules):
 | Move       | move               | Effect (Move)   | distance(1), through(`false`) |
 | Status     | status             | Stats           | None for now |
 | AttackRes  | resistance         | Stats           | armor(0), pierce(0), maxDamage(`math.huge`), minDamage(1) |
-| PushRes    | resistance         | Number          | 1 |
-| DigRes     | resistance         | Number          | 1 |
+| PushRes    | resistance         | Number          | push(1) |
+| DigRes     | resistance         | Number          | dig(1) |
 | StatusRes  | resistance         | Stats           | None for now |
+| Invincible | resistance         | Number          | invincible(0) |
 
-### Examples:
+#### Examples:
 
 ```lua
 local StatTypes = require('logic.decorators.dynamicstats').StatTypes
@@ -57,7 +58,7 @@ local digRes = entity:getStat(StatTypes.DigRes)
 -- digRes is a number, 1 by default
 ```
 
-## `setStat(statIndex, ...)`
+### `setStat(statIndex, ...)`
 
 Used to reset a particular stat to the particular amount. **Shorthand function:** `Entity:setStat(...)`.
 
@@ -89,7 +90,7 @@ local attack = entity:getStat(StatTypes.Attack)
 entity:setStat(StatTypes.Attack, 'damage', attack.damage + 1)
 ```
 
-## `DynamicStats:addStat(statIndex, ...)`
+### `DynamicStats:addStat(statIndex, ...)`
 
 Works the same way as the `setStat` method, except it adds the specified amount/stats to the existing stats instead of resetting the selected stat values. **Shorthand activation**: `Entity:addStat(statIndex, ...)`
 
@@ -117,13 +118,13 @@ entity:addStat(StatTypes.Attack, -stats)
 entity:getStat(StatTypes.Attack) -- damage == -3
 ```
 
-## `addHandler(statIndex, handler)` and removeHandler(statIndex, handler)`
+### `addHandler(statIndex, handler)` and removeHandler(statIndex, handler)`
 
 For each of the stat types, a chain is created. By default, these chains are empty. These chains are traversed before returning the stat. The chains can be employed to implement a more complex logic, rather than just increasing or decreasing stats by some amount. For that, use `Entity:setStat()` instead. 
 
 This function is less common, so it lacks a shorthand function on `Entity`.
 
-### Here's a contrived example.
+#### Here's a contrived example.
 
 ```lua
 local StatTypes = require('logic.decorators.dynamicstats').StatTypes
@@ -157,7 +158,7 @@ damage = entity:getStat(StatTypes.Attack).damage
 -- damage is 0 again
 ```
 
-## `getStatRaw(statIndex)`
+### `getStatRaw(statIndex)`
 
 Get the stat without a pass through the chain of this stat. Always returns a `Stats` object.
 
@@ -187,7 +188,7 @@ local digRes  = resistances:get('dig')
 ```
 
 
-## `registerStat(name, config, howToReturn)`
+### `registerStat(name, config, howToReturn)`
 
 In short, dynamic stats keeps all stats in three config objects:
 1. `StatConfigs`, which keeps track of what properties are returned on stat request;
@@ -199,9 +200,9 @@ In short, dynamic stats keeps all stats in three config objects:
 
 This function adds the specified stat in all entities that are decorated with the `DynamicStats` constructor.
 
-### Examples
+#### Examples
 
-#### With effect:
+##### With effect:
 ```lua
 local SampleEffect = class('SampleEffect', Effects)
 SampleEffect.modifiers = {
@@ -232,7 +233,7 @@ local sample = entity:getStat(StatTypes.Sample)
 -- sample.field1 == 0, sample.field2 == 8
 ```
 
-#### With stats:
+##### With stats:
 ```lua
 local SampleModifier = {
     { 'field1', 0 }, -- default value is 0
@@ -259,7 +260,7 @@ local sample = entity:getStat(StatTypes.Sample)
 -- sample:get('field1') == 0, sample:get('field2') == 8
 ```
 
-#### With Number:
+##### With Number:
 ```lua
 local SampleModifier = { 'field1', 5 }
 local effectConfig = { 'sample', SampleModifier }
@@ -281,7 +282,7 @@ local sample = entity:getStat(StatTypes.Sample)
 -- sample == 5
 ```
 
-#### With baseModifiers:
+##### With baseModifiers:
 ```lua
 local SampleEntity = class('SampleEntity', Entity)
 
