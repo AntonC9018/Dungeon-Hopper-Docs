@@ -11,7 +11,7 @@ This is a decorator which adds the possibility to easily initialize with fallbac
 This decorator doesn't add any chains, but has a number of useful methods.
 
 
-## `DynamicStats:activate(statIndex)`
+## `activate(statIndex)`
 
 Used to retrieve a stat. **Shorthand activation:** `Entity:getStat(statIndex)`.
 This function may return an `Effect`, a `Stats` object or a `Number`, depending on the stat.
@@ -57,9 +57,11 @@ local digRes = entity:getStat(StatTypes.DigRes)
 -- digRes is a number, 1 by default
 ```
 
-## `DynamicStats:setStat(statIndex, ...)`
+## `setStat(statIndex, ...)`
 
 Used to reset a particular stat to the particular amount. **Shorthand function:** `Entity:setStat(...)`.
+
+This function is probably going to be used rarely.
 
 ```lua
 local StatTypes = require('logic.decorators.dynamicstats').StatTypes
@@ -69,7 +71,7 @@ local StatTypes = require('logic.decorators.dynamicstats').StatTypes
 entity:setStat(StatTypes.AttackRes, 'armor', 2)
 
 -- set pushRes to 0
--- amount* == 0
+-- amount == 0
 -- can be used only if the value is returned as a number
 entity:setStat(StatTypes.PushRes, 0)
 
@@ -89,37 +91,35 @@ entity:setStat(StatTypes.Attack, 'damage', attack.damage + 1)
 
 ## `DynamicStats:addStat(statIndex, ...)`
 
-Works the same way as the `setStat` method, except it adds the specified amount/stats to the existing stats instead of resetting the selected stat values.
+Works the same way as the `setStat` method, except it adds the specified amount/stats to the existing stats instead of resetting the selected stat values. **Shorthand activation**: `Entity:addStat(statIndex, ...)`
 
 ```lua
 local StatTypes = require('logic.decorators.dynamicstats').StatTypes
-local dynamicStats = entity.decorators.dynamicStats
 
-dynamicStats:setStat(StatTypes.Attack, 'damage', 1)
-dynamicStats:getStat(StatTypes.Attack) -- damage == 1
+entity:setStat(StatTypes.Attack, 'damage', 1)
+entity:getStat(StatTypes.Attack) -- damage == 1
 
-dynamicStats:addStat(StatTypes.Attack, 'damage', 1)
-dynamicStats:getStat(StatTypes.Attack) -- damage == 2
+entity:addStat(StatTypes.Attack, 'damage', 1)
+entity:getStat(StatTypes.Attack) -- damage == 2
 
 local stats = Stats.fromTable({ damage = 5 })
 
 -- Addition
-dynamicStats:addStat(StatTypes.Attack, stats)
-dynamicStats:getStat(StatTypes.Attack) -- damage == 7
+entity:addStat(StatTypes.Attack, stats)
+entity:getStat(StatTypes.Attack) -- damage == 7
 
 -- Subtraction
-dynamicStats:addStat(StatTypes.Attack, -stats)
-dynamicStats:getStat(StatTypes.Attack) -- damage == 2
+entity:addStat(StatTypes.Attack, -stats)
+entity:getStat(StatTypes.Attack) -- damage == 2
 
 -- Be careful, as it can get below 0 this way
-dynamicStats:addStat(StatTypes.Attack, -stats)
-dynamicStats:getStat(StatTypes.Attack) -- damage == -3
+entity:addStat(StatTypes.Attack, -stats)
+entity:getStat(StatTypes.Attack) -- damage == -3
 ```
 
-## `DynamicStats:addHandler(statIndex, handler)` and `DynamicStats:removeHandler(statIndex, handler)`
+## `addHandler(statIndex, handler)` and removeHandler(statIndex, handler)`
 
-For each of the stat types, a chain is created. By default, these chains are empty.
-The chains can be employed to implement a more complex logic, rather than just updating stats. For updating stats, use `Entity:setStat()` instead. 
+For each of the stat types, a chain is created. By default, these chains are empty. These chains are traversed before returning the stat. The chains can be employed to implement a more complex logic, rather than just increasing or decreasing stats by some amount. For that, use `Entity:setStat()` instead. 
 
 This function is less common, so it lacks a shorthand function on `Entity`.
 
@@ -130,9 +130,9 @@ local StatTypes = require('logic.decorators.dynamicstats').StatTypes
 local dynamicStats = entity.decorators.dynamicStats
 
 local handler = function(event)
-      -- check if a weapon is equipped. 
+      -- check if a weapon is not equipped. 
       -- up the attack by 5 in this case.
-      if event.actor.weapon ~= nil then
+      if event.actor.weapon == nil then
           -- note that the attack is set on `event.stats` and not `event.attack`
           event.stats.damage = event.stats.damage + 5
       end
@@ -157,7 +157,7 @@ damage = entity:getStat(StatTypes.Attack).damage
 -- damage is 0 again
 ```
 
-## `DynamicStats:getStatRaw(statIndex)`
+## `getStatRaw(statIndex)`
 
 Get the stat without a pass through the chain of this stat. Always returns a `Stats` object.
 
@@ -187,7 +187,7 @@ local digRes  = resistances:get('dig')
 ```
 
 
-## `DynamicStats.registerStat(name, config, howToReturn)`
+## `registerStat(name, config, howToReturn)`
 
 In short, dynamic stats keeps all stats in three config objects:
 1. `StatConfigs`, which keeps track of what properties are returned on stat request;
