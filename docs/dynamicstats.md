@@ -118,7 +118,7 @@ entity:addStat(StatTypes.Attack, -stats)
 entity:getStat(StatTypes.Attack) -- damage == -3
 ```
 
-### `addHandler(statIndex, handler)` and removeHandler(statIndex, handler)`
+### `addHandler()` and `removeHandler()`
 
 For each of the stat types, a chain is created. By default, these chains are empty. These chains are traversed before returning the stat. The chains can be employed to implement a more complex logic, rather than just increasing or decreasing stats by some amount. For that, use `Entity:setStat()` instead. 
 

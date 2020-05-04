@@ -77,3 +77,72 @@ local suTinker = utils.SelfUntinkingTinker(entity, 'sampleChain', generator)
 suTinker.tink()   -- the function output by generator gets onto the chain
 suTinker.untink() -- the function output by generator is taken off the chain
 ```
+
+## RefTinker
+
+A more useful version of the `SelfUntinkingTinker` is the `RefTinker`, which means tinker with self reference.
+
+```lua
+local RefTinker = require 'logic.tinkers.reftinker'
+
+-- it is given a list of { chainName, handler or { handler, priority } }
+local function generator(tinker)
+    return 
+    {
+        { 
+            'move', function (event)
+                print("Hello")
+                tinker:untink(event.actor)
+            end
+        },
+        {
+            'attack', {
+                function (event)
+                    print("Hello")
+                    tinker:untink(event.actor)
+                end,
+                Ranks.HIGH
+            }
+        }
+    }
+end
+
+local refTinker = RefTinker(generator)
+refTinker:tink(entity)
+```
+
+If you want to define functions separately, use generators for those functions. I think this is the only way to make definitions less ugly and closures are the only way of getting a reference to the tinker inside the handlers (contact me if you know any other).
+
+```lua
+local RefTinker = require 'logic.tinkers.reftinker'
+
+local function testGenerator(tinker)
+    return function(event)
+        print("Hello")
+        tinker:untink(event.actor)
+    end
+end
+
+local function testGenerator2(tinker)
+    return {
+        function(event)
+            print("Hello")
+            tinker:untink(event.actor)
+        end,
+        Ranks.HIGH
+    }
+end
+
+local function generator(tinker)
+    return 
+    {
+        { 'move',   testGenerator(tinker)  },
+        { 'attack', testGenerator2(tinker) }
+    }
+end
+
+local refTinker = RefTinker(generator)
+refTinker:tink(entity)
+```
+
+Similarly, a version for stats also exists and is called `RefStatTinker`.
