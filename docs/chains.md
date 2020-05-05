@@ -132,14 +132,21 @@ chain:addHandler({ h2, Ranks.MEDIUM })
 ```
 
 #### Ranks to Numbers conversion
-Under the hood, ranks are mapped to priority *numbers*, which are plain integers. They are stored in the `Numbers.rankMap` enum, and stuff like this is also possible:
+Under the hood, ranks are mapped to priority *numbers*, which are plain integers. They are stored in the `Numbers.rankMap` array, and stuff like this is also possible:
 ```lua
 local Numbers = require 'lib.chains.numbers'
 local Ranks = require 'lib.chains.ranks'
 
-chain:addHandler({ h1, Ranks.Medium })
-chain:addHandler({ h2, Numbers.rankMap[Ranks.Medium] + 1 })
+chain:addHandler({ h1, Ranks.MEDIUM })
+chain:addHandler({ h2, Numbers.rankMap[Ranks.MEDIUM] + 1 })
 -- h2 will be executed just before h1
+```
+
+Ranks themselves are simply numbers from 1 to 5, which are recognozed by the `SChain` as priority categories instead of actual priority numbers. These three statements are equivalent:
+```lua
+chain:addHandler(h1)
+chain:addHandler({ h1, Ranks.MEDIUM })
+chain:addHandler({ h1, 3 })
 ```
 
 Under the hood, when you add handlers to the same rank, their priority numbers are decremented with each new handler.
@@ -156,9 +163,9 @@ chain:addHandler({ h5, Ranks.HIGH   }) -- still 400000
 anotherChain:addHandler({ h6, Ranks.LOW }) -- maps to 200000
 ```
 
-> NOTE: The priority numbers are not restored once a handler is removed.
+> NOTE: The priority numbers of a chain instance are not restored once a handler is removed.
 
-Techinically, you may use floats, but you are recommended to use integers.
+Techinically, you may use floats, but you are recommended to use unsigned integers. Also, do not use numbers from 1 to 5 for priority numbers as those are processed as indicating ranks instead.
 
 #### Why is it useful?
 

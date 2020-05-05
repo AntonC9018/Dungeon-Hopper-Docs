@@ -146,3 +146,65 @@ refTinker:tink(entity)
 ```
 
 Similarly, a version for stats also exists and is called `RefStatTinker`.
+
+
+## StoreTinker
+
+`StoreTinkers` are a slight modification of `RefTinkers` allowing you to store data within them.
+
+```lua
+local function generator(tinker)
+    return 
+    {
+        { 
+            'move', function(event)
+                -- get the store for this entity
+                local store = tinker:getStore(event.actor)
+                -- equivalent to tinker.stores[event.actor.id]
+
+                if store.i >= 3 then
+                    -- one the count reaches 3, untink
+                    tinker:untink(event.actor)
+                    -- clear the store. sets it to nil
+                    tinker:removeStore(event.actor)
+                else
+                    -- increment the count
+                    store.i = store.i + 1
+                end
+            end
+        }
+    }
+end
+
+local tinker = StoreTinker(generator)
+
+tinker:tink(player)
+tinker:setStore(player, { i = 0 })
+
+-- the function will be called on move 3 times
+-- it will be removed on the fourth iteration
+```
+
+You may also share the store between multiple tinkers.
+```lua
+local store = { i = 0 }
+tinker1:setStore(entity, store)
+tinker2:setStore(entity, store)
+```
+
+This way you also may link multiple tinkers together.
+```lua
+local store = { tinker1, tinker2 }
+tinker1:setStore(entity, store)
+tinker2:setStore(entity, store)
+
+-- now you can do
+local tinker1 = tinker:getStore(event.actor)[1]
+-- inside the second tinker's handlers to e.g.
+-- untink the first tinker
+tinker1:untink(event.actor)
+```
+
+And this is pretty cool if you ask me. You have just one tinker shared across all instances that are using it!
+
+> There is one minor problem, though. If two instances try to store different data using the same entity (id), it may cause unexpected behavior, so be careful!
