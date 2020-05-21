@@ -20,12 +20,12 @@ Decorators are used extensively throughout the project. They act pretty much lik
 
 Assume you have an entity class you'd like to decorate. For that, just do the following:
 ```lua
-local Decorators = require "logic.decorators.decorators"
-local decorate = require("logic.decorators.decorator").decorate
 Decorators.Start(MyEntity)                -- create the chain template on that object
 decorate(MyEntity, MyDecorator)           -- add stuff to that template, add stuff to your entity
 decorate(MyEntity, Decorators.Attackable) -- apply a predefined decorator
 ```
+You do not need to import anything, since the basic decorators and the decorate function are available globally.
+
 > NOTE: You cannot decorate instances! You can apply the decorators only to classes!
 > So, in order to, e.g., stop your entities from taking damage while they are in some phase of their lifecycle, use some other logic, e.g. adding handlers to chains. 
 > In our example, this would mean stopping event from propagating in `myEntity.chains.defence` chain by adding a nullifier handler to it 
@@ -71,8 +71,6 @@ The decorator also gets pushed to the `myEntityClass.decoratorsList` for the fur
 The initialization stage takes place when your entity class is being instantiated. At this time, all Decorators saved on `myEntityClass.decoratorsList` are getting instantiated and their `myDecorator:__construct()` methods called. This is the moment they should instantiate things on the instance, if they need to. The decorator instances are saved on `entity.decorators` (`entity` here being your instantiated `myEntityClass`), which is a table where the keys are the names of the applied decorator classes. For example, to access the `Attackable` decorator instance, one would do:
 ```lua
 entity.decorators.Attackable
--- This also works
-entity.decorators[class.name(Decorators.Attackable)]
 ```
 This is useful for checking whether a specific decorator has been applied, although you are encouraged to use `entity:isDecorated(decorator)` if you are just checking.
 ```lua
@@ -133,6 +131,7 @@ This decorator enables the entity to take normal hits.
 `die` checks if the health is 0 and calls the `Entity.die()` if it is.
 > `Entity.die()` is the shorthand for `Entity.decorators.Killable.activate()`
 
+
 **Shorthand activation**: `Entity:beAttacked(action)`
 
 Also has a function, `Attackable.getAttackableness(actor, attacker)`, which traverses the `attackableness` chain and return the Attackableness of this entity, which can be NO, YES, IF_CLOSE or SKIP (think ghosts). Default return value: `Attackableness.YES`. 
@@ -148,17 +147,29 @@ This decorator enables the entity to do normal hits.
 | `getAttack` | `setBase`, `getTargets`      | Used for creating the Attack object and modifying it with e.g. more damage |
 | `attack`    | `applyAttack`, `applyPush`, `applyStatus` | Used for doing the Attack and applying push and the related status effects |
 
+You may pass the list of entities you want to attack as a parameter to the activation. This would skip the process of getting targets.
+
 **Shorthand activation**: `Entity:executeAttack(action)`
 
+### `Interacting`
 
-### `Explodable`
-Enables the entity to be exploded
+Adds the ability to interact with objects decorated with `Interactable`.
 
+| Added chain   | Automatically added handlers | Description |
+|---------------|------------------------------| ----------- |
+| `checkInteract` | `getTarget`, `checkIsInteractable` | |
+| `interact`      | `interact` | |
 
-### `InvincibleAfterHit`
-TODO: `Invincible` should be a decorator
-Makes the entity invincible for 2 loop after it's taken a hit
+### `Interactable`
 
+| Added chain   | Automatically added handlers | Description |
+|---------------|------------------------------| ----------- |
+| `checkInteracted` | - | |
+| `beInteracted`    | - | |
+
+### `Inventory`
+
+See [items](items.md).
 
 ### `Diggable`
 Enables the entity to be dug. The wall would take damage on dig equal to dig damage.
@@ -239,8 +250,14 @@ Makes the entity vulnerable to status effects. Status effects are being frozen, 
 
 | Added chain   | Automatically added handlers | Description |
 |---------------|------------------------------| ----------- |
-| `checkStatus` | `checkStatus`                |             |
-| `applyStatus` | `applyStatus`                |             |
+| `status`      | `status`                     | applies statuses |
+
+| Modified chain | Automatically added handlers | Description |
+|----------------|------------------------------| ----------- |
+| `tick`         | `tick`                       | decreases all statuses |
+| `checkAction`  | `free`                       | calls `free()` on statuses |
+
+You may optionally pass a configuration parameter to the activation. See [stats](stats.md). 
 
 **Shorthand activation**: `Entity:beStatused(action)`
 
@@ -251,17 +268,18 @@ Allows the entity to reset some fields at the `tick` phase.
 
 | Added chain   | Automatically added handlers | Description |
 |---------------|------------------------------| ----------- |
-| `tick`        | `resetBasic`                 |             |
+| `tick`        | -                            |             |
 
-resetBasic does:
+
+This:
 ```lua
 actor.didAction = false
 actor.doingAction = false
 actor.nextAction = nil
 actor.enclosingEvent = nil
 ```
+is done directly by world.
 
-Update: `resetBasic` should has been moved to the `reset` stage instead.
 
 **Shorthand activation**: `Entity:tick()`
 
@@ -273,57 +291,20 @@ Adds an `hp` object to the player. Makes them `takeDamage` on activation.
 **Shorthand activation**: `Entity:takeDamage(damage)`
 
 
-## Combos
+## Copying decorators
 
-As many of the entities would use the same decorators, applying them over and over is error prone and can be simplified. This is why `Combos` exist. 
+### `copyChains(from, to)`
 
-`Combos` are essentially functions that apply a predefined set of decorators at once. For example, this:
-
-```lua
-Combos.BasicEnemy(Enemy)
-```
-
-would substitute this:
-
-```lua 
-Decorators.Start(Enemy)
-decorate(Enemy, Decorators.Acting)
-decorate(Enemy, Decorators.Sequential)
-decorate(Enemy, Decorators.Killable)
-decorate(Enemy, Decorators.Ticking)
-decorate(Enemy, Decorators.Attackable)
-decorate(Enemy, Decorators.Attacking)
-decorate(Enemy, Decorators.Bumping)
-decorate(Enemy, Decorators.Explodable)
-decorate(Enemy, Decorators.Moving)
-decorate(Enemy, Decorators.Pushable)
-decorate(Enemy, Decorators.Statused)
-decorate(Enemy, Decorators.WithHP)
-Enemy.chainTemplate:addHandler('action', GeneralAlgo)
-```
-
-This:
+Subclasses of subclasses of `Entity` can use this function to reapply all previously applied decorators and retouchers of the superclass.
 
 ```lua
-Combos.Player(PlayerClass)
+local MyEntitySubclass = require 'wherever.your.subclass.is'
+local MySubclass = class('MySubclass', MyEntitySubclass)
+copyChains(MyEntitySubclass, MySubclass)
+-- now you can apply other decorators without affecting the superclass
+decorate(MySubclass, Decorators.Whatever)
 ```
 
-would substitute this:
+### `Entity.reapplyDecorators(from, to)`
 
-``` lua
-Decorators.Start(Player)
-decorate(Player, Decorators.Ticking)
-decorate(Player, Decorators.Killable)
-decorate(Player, Decorators.Acting)    
-decorate(Player, Decorators.Attackable)
-decorate(Player, Decorators.Attacking) 
-decorate(Player, Decorators.Bumping)  
-decorate(Player, Decorators.Explodable)
-decorate(Player, Decorators.Moving)  
-decorate(Player, Decorators.Pushable) 
-decorate(Player, Decorators.Statused) 
-decorate(Player, Decorators.InvincibleAfterHit)
-decorate(Player, Decorators.PlayerControl)
-decorate(Player, Decorators.WithHP)
-Player.chainTemplate:addHandler('action', PlayerAlgo)
-```
+This function works the same way but ignores the retouchers.

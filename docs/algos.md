@@ -5,7 +5,7 @@ title: Algorithms
 
 ## Overview
 
-Here are described the algorithms of **non-player action execution process** and **player action execution process**.
+Here are described the algorithms of **enemy action execution process** and **simple action execution process**.
 
 
 ## The General Algo
@@ -28,7 +28,7 @@ For example, with an `AttackMoveAction` as the action, the entity is going to tr
 5. If all the `movs` have failed, the `failAction` chain is traversed on the actor entity.
 
 
-## The Player Algo
+## The Simple Algo
 
 1. There is an assumption about the action that this algorithm makes. It's that the `direction` field (if needed) is already set on the action before `executeAction()` is called. This is in contrast with the `GeneralAlgo`, where the direction for the action is chosen inside `executeAction()`. In case of player, the next action and the direction are set before the new iteration of the game loop, since the players don't have their `computeAction()` being called.
 
@@ -37,37 +37,33 @@ For example, with an `AttackMoveAction` as the action, the entity is going to tr
 3. If the action fails, the `failAction` chain is traversed.
 
 
-### Is the Player Algo just for the player?
+### Is the Simple Algo just for the player?
 
-Note that the Player Algo is useful not just for the player, but can be used for other things too. In fact, the general algo applies pretty much to just enemies, while the player algo is used for traps, special tiles, etc. This is because their actions are pretty homogenous, that is, they do the same thing every beat. For example, bounce traps test if there is something on top of them to do the action of bouncing on that something in the direction that trey're looking; the special tiles see if there is something on top of them and do e.g. submerging on that something. This lets us return the action (+, optionally, direction) directly in the overriden `calculateAction` method, which also simplifies the algorithm quite a bit.
+Note that the Simple Algo is useful not just for the player, but can be used for other things too. In fact, the general algo applies pretty much to just enemies, while the player algo is used for traps, special tiles, etc. This is because their actions are pretty homogenous, that is, they do the same thing every beat. For example, bounce traps test if there is something on top of them to do the action of bouncing on that something in the direction that trey're looking; the special tiles see if there is something on top of them and do e.g. submerging on that something. This lets us return the action (+, optionally, direction) directly in the overriden `calculateAction` method, which also simplifies the algorithm quite a bit.
 
 Here's an excerpt from the code for traps as an example usage of the player algo not for the player. Note that the code for the decorator has not been included.
 ```lua
 -- ...
--- add the action algorithm
-Trap.chainTemplate:addHandler(
-    'action', 
-    -- use the player algo, as it just does the action, which is what we need
-    require 'logic.algos.player'
-)
+-- Class definition
+local Trap = class('Trap', Entity)
+
+Trap.layer = Layers.trap
+Trap.state = State.UNPRESSED
+
+Decorators.Start(Trap)
+decorate(Trap, Decorators.WithHP)
+decorate(Trap, Decorators.Ticking)
+decorate(Trap, Decorators.Attackable)
+decorate(Trap, Decorators.Acting)
+decorate(Trap, Decorators.DynamicStats)
+-- use the player algo
+Retouchers.Algos.simple(Trap)
+Retouchers.Attackableness.no(Trap)
 -- ...
--- define our custom action that calls the new decorator's activation
-local BounceAction = Action.fromHandlers(
-    'BounceAction',
-    handlerUtils.applyHandler('executeBounce')
-)
+decorate(BounceTrap, Bouncing)    
+TrapRetouchers.bePushedOnBounce(BounceTrap)
+TrapRetouchers.tickUnpress(BounceTrap)
 
--- define a new method that calls the new decorator
-function Trap:executeBounce(action)
-    return self.decorators.Bouncing:activate(self, action)
-end
-
--- override calculateAction. Return our custom action
-function Trap:calculateAction()
-    local action = BounceAction()
-    -- set the orientation right away since it won't change
-    action.direction = self.orientation
-    self.nextAction = action
-end
+utils.redirectActionToDecorator(BounceTrap, 'Bouncing')
 -- ...
 ```

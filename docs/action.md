@@ -57,11 +57,11 @@ You can find the one direction that succeeded (assuming `GeneralAlgo`) in `enclo
 
 ### The algorithms
 
-Most common algorithms, which act by doing something in a direction, are the `GeneralAlgo` for non-player entities and `PlayerAlgo` for the player. 
+Most common algorithms, which act by doing something in a direction, are the `GeneralAlgo` for enemies and `SimpleAlgo` for the player and for non-enemy entities. 
 
-The difference between these two is that the `GeneralAlgo` tests out a couple of desirable actions, which it would get from `entity.sequence.getMovs()` function (this function is set for each step of the sequence individually, see [Sequence](sequence.md)), gets the most desirable one out of them, and executes that single one, while the `PlayerAlgo` just does the selected action in the only direction provided (which came from user input). 
+The difference between these two is that the `GeneralAlgo` tests out a couple of desirable actions, which it would get from `entity.sequence.getMovs()` function (this function is set for each step of the sequence individually, see [Sequence](sequence.md)), gets the most desirable one out of them, and executes that single one, while the `SimpleAlgo` just does the selected action in the only direction provided (which came from user input). 
 
-As a result, **these algorithms support just one action of one type at a time**. That is, with the `GeneralAlgo` it is impossible to program an enemy that e.g. would attack to the left, while spitting out a projectile to the right (it is possible, but hacky), which is also true for the `PlayerAlgo`.
+As a result, **these algorithms support just one action of one type at a time**. That is, with the `GeneralAlgo` it is impossible to program an enemy that e.g. would attack to the left, while spitting out a projectile to the right (it is possible, but hacky), which is also true for the `SimpleAlgo`.
 
 Action chains of both enemies and players typically have a verification stage before deciding on which action to start. These are set on the `get` (or `check`) chain from the corresponding decorator. These chain are incorporated in the `chainTemplate` directly on the entity class. For example, for an attack, the decorator would be `Attacking` and the chain would be named `getAttack`. So you would do:
 

@@ -3,47 +3,9 @@ id: modifiers
 title: Modifiers
 ---
 
-Modifiers define how stats are presented in `Entity.baseModifiers` and stored in the `DynamicStats` decorator.
+Modifiers define how stats are presented in `Entity.baseModifiers` and stored in the `DynamicStats` decorator. Look at that for more details
 
-## Attack Modifier
-
-`damage` - the attack damage of the attack
-
-`pierce` - minimul level of pierce protection to prevent the attack
-
-## Move Modifier
-
-`distance` - up to how many tiles to move
-
-## Push
-
-`distance` - up to how many tiles to push
-
-`power` - mininum level of push protection to prevent the pushing
-
-## Dig
-
-`damage` - dig damage (digging is doing damage to walls)
-
-`power` - minimum dig resistance to prevent the digging
-
-## Resistance
-
-`armor` - damage reduction
-
-`maxDamage`
-
-`push` - push protection level
-
-`pierce`
-
-`dig` - dig protection level
-
-## Status
-
-Here should be all the different types of status effects, which will be added later
 
 ## HP
 
 For now, an int
-

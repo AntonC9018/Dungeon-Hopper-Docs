@@ -96,7 +96,7 @@ step1 = {
         -- are on one line / column
         -- for this, we create a custom chain on which we hang that function
         -- create a chain that consists of one handler
-        chain: checkOrthogonal,
+        checkOrthogonal,
      -- the next step index
     success = 2,
     -- in case this fails, e.g. we're frozen, remain at the 1st step

@@ -38,17 +38,17 @@ List of less significant things not implemented:
 1. Digging, walls +
 2. Traps +
 3. Special tiles +
-4. Explosions
-5. Environment Objects
-6. Status effects
-7. Projectiles
-8. Items
+4. Explosions + 
+5. Environment Objects +
+6. Status effects +
+7. Projectiles +
+8. Items +
 10. Better controls
 9. Better renderer
 
 List of dreams:
-1. World generation
-2. Enemy pools
+1. World generation +
+2. Enemy pools +
 3. Shopping
 4. Secrets
 5. Music

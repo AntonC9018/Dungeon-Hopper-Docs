@@ -19,15 +19,15 @@ Here's a list of all predefined stats (may be extended by modules):
 
 | Name       | Modifier looked up | Returned as     | Fields: Name(defaultValue)              |
 | ---------- | ------------------ | --------------- | --------------------------------------- |
-| Attack     | attack             | Effect (Attack) | damage(0), pierce(0) |
+| Attack     | attack             | Effect (Attack) | damage(0), pierce(0), source(`'normal'`), power(1) |
 | Push       | push               | Effect (Push)   | power(0), distance(1) |
 | Dig        | dig                | Effect (Dig)    | damage(0), power(0) |
 | Move       | move               | Effect (Move)   | distance(1), through(`false`) |
-| Status     | status             | Stats           | None for now |
-| AttackRes  | resistance         | Stats           | armor(0), pierce(0), maxDamage(`math.huge`), minDamage(1) |
-| PushRes    | resistance         | Number          | push(1) |
+| Status     | status             | Stats           | Added by modules |
+| AttackRes  | resistance         | Stats           | armor(0), pierce(0), maxDamage(`math.huge`), minDamage(1), normal(1) (expandable) |
+| PushRes    | resistance         | Stats           | normal(1) (expandable) |
 | DigRes     | resistance         | Number          | dig(1) |
-| StatusRes  | resistance         | Stats           | None for now |
+| StatusRes  | resistance         | Stats           | Added by modules |
 | Invincible | resistance         | Number          | invincible(0) |
 
 #### Examples:
@@ -71,10 +71,10 @@ local StatTypes = require('logic.decorators.dynamicstats').StatTypes
 -- statName == 'armor', newAmount = 2
 entity:setStat(StatTypes.AttackRes, 'armor', 2)
 
--- set pushRes to 0
+-- set digRes to 0
 -- amount == 0
 -- can be used only if the value is returned as a number
-entity:setStat(StatTypes.PushRes, 0)
+entity:setStat(StatTypes.DigRes, 0)
 
 -- set attack damage to 1
 entity:setStat(StatTypes.Attack, 'damage', 1)
@@ -90,7 +90,7 @@ local attack = entity:getStat(StatTypes.Attack)
 entity:setStat(StatTypes.Attack, 'damage', attack.damage + 1)
 ```
 
-### `DynamicStats:addStat(statIndex, ...)`
+### `addStat(statIndex, ...)`
 
 Works the same way as the `setStat` method, except it adds the specified amount/stats to the existing stats instead of resetting the selected stat values. **Shorthand activation**: `Entity:addStat(statIndex, ...)`
 
@@ -120,7 +120,7 @@ entity:getStat(StatTypes.Attack) -- damage == -3
 
 ### `addHandler()` and `removeHandler()`
 
-For each of the stat types, a chain is created. By default, these chains are empty. These chains are traversed before returning the stat. The chains can be employed to implement a more complex logic, rather than just increasing or decreasing stats by some amount. For that, use `Entity:setStat()` instead. 
+For each of the stat types, a chain is created. By default, these chains are empty. These chains are traversed before returning the stat. The chains can be employed to implement a more complex logic, rather than just increasing or decreasing stats by some amount. For that, use `Entity:addStat()` instead. 
 
 This function is less common, so it lacks a shorthand function on `Entity`.
 

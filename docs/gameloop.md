@@ -14,10 +14,11 @@ Here is an overview of what happens during the game loop and in what order.
 3. Now all actions are executed in this order:
     1. *Player* actions
     1. *Projectiles*
-    2. All *Reals* but player
-    3. *Explosions*
-    5. *Traps*
-    4. *Floor* hazards
+    2. *Explosions*
+    3. All *Reals* but player
+    4. *Traps*
+    5. *Floor* hazards
+These groups are ticked once all entities from the group have executed their action.
 
 4. Destroyed (*dead*) things are filtered out, things are rendered and then *reset*. *Resetting* means deleting the actions that the objects chose inside those objects and some other variables for doing those action calculations. 
 

@@ -78,7 +78,9 @@ There is another standart chain you can use, called `hitAll`. Its steps are as f
 2. Check if hitting only those entities that are attackable only when you are next to them (e.g. crates) without being next to any (return nothing in this case);
 3. Filter the list, leaving only Attackable entities.
 
-Be careful as this algorithm ignores `reach` in the pattern.
+Be careful as this algorithm ignores `reach` in the pattern. 
+
+> Now I'm actually realizing that this is not how it should work. For example, the hammer from the original game does not do the attack if there is an unattackable block in front of the character, while in my code as it is it would.
 
 It also provides a check function, which is actually just `Chain.checkPropagate`.
 

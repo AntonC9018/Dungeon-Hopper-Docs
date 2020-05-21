@@ -15,10 +15,14 @@
         "movs",
         "sequence",
         "modifiers",
-        "weapon",
         "dynamicstats",
         "retouchers",
-        "tinkers"
+        "tinkers",
+        "status",
+        "items",
+        "weapon",
+        "pools",
+        "generation"
     ]
   }
 }
