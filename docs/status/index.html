@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Status effects · Dungeon Hopper</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="It is hard to define a status effect, so I will illustrate it with an example instead."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Status effects · Dungeon Hopper"/><meta property="og:type" content="website"/><meta property="og:url" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/"/><meta property="og:description" content="It is hard to define a status effect, so I will illustrate it with an example instead."/><meta property="og:image" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://AntonC9018.github.io/Dungeon-Hopper-Docs/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/Dungeon-Hopper-Docs/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/Dungeon-Hopper-Docs/js/scrollSpy.js"></script><link rel="stylesheet" href="/Dungeon-Hopper-Docs/css/main.css"/><script src="/Dungeon-Hopper-Docs/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/Dungeon-Hopper-Docs/"><img class="logo" src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper"/><h2 class="headerTitleWithLogo">Dungeon Hopper</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/Dungeon-Hopper-Docs/docs/start" target="_self">Docs</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Topics</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Getting Started</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/start">What is this?</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Terminology And Basics</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/chains">Chains and Chain Templates</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/vocab">Calling Conventions</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Topics</h3><ul class=""><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/gameloop">Game Loop</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/decorators">Decorators</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/action">Action</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/algos">Algorithms</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/movs">Movs Algorithms</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/sequence">Sequence</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/modifiers">Modifiers</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/dynamicstats">Dynamic Stats</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/retouchers">Retouchers</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/tinkers">Tinkers</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/status">Status effects</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/weapon">Weapons</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/pools">Pools</a></li><li class="navListItem"><a class="navItem" href="/Dungeon-Hopper-Docs/docs/generation">World Generation</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Status effects</h1></header><article><div><span><p>It is hard to define a status effect, so I will illustrate it with an example instead.</p>
+<h2><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h2>
+<p>Take for example the <code>stun</code> effect. It has an amount, which indicates for how many ticks it will last. So applying a stun to an entity of amount 2 means it would skip 2 bits.</p>
+<p>This is achieved via a <a href="/Dungeon-Hopper-Docs/docs/tinkers">tinker</a>. In this case, we have a tinker that blocks all actions from the entity.</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">forbidAction</span><span class="hljs-params">(event)</span></span>
+    event.propagate = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">end</span>
+
+tinker = Tinker({
+    { <span class="hljs-string">'checkAction'</span>, forbidAction }
+})
+</code></pre>
+<p>The tinker is tinked once the <code>stun</code> is applied and is untinked once the remaining amount ticks down to 0.</p>
+<p>The essence is as simple as it is, while the actual behavior achieved using it is pretty broad.</p>
+<h2><a class="anchor" aria-hidden="true" id="statused-decorator"></a><a href="#statused-decorator" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Statused Decorator</h2>
+<p>Statuses are obviously pretty tighly entwined with the <code>Statused</code> decorator.</p>
+<h3><a class="anchor" aria-hidden="true" id="overview"></a><a href="#overview" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h3>
+<p>In short, this decorator provides methods for:</p>
+<ol>
+<li>Applying status effects after checking resistances</li>
+<li>Ticking (decreasing) status effects amounts each beat</li>
+<li>Wearing off of the status effect</li>
+<li>registering new status effects</li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="the-stats-associated-with-statuses"></a><a href="#the-stats-associated-with-statuses" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The stats associated with statuses</h3>
+<p>There are 2 stats for statuses. First one is <code>StatTypes.Status</code>, which indicates kind of the power level of the stat, and the second is <code>StatTypes.StatusRes</code>, which indicates the resistances against the particular statuses. So, for example, if you tried to apply a <code>stun</code> status effect while having your <code>stun</code> at <code>StatTypes.Status</code> being lower than the <code>stun</code> at <code>StatTypes.StatusRes</code> of the entity you are applying the status effect to, no status effect would be applied. This is managed entirely by the <code>Statused</code> decorator.</p>
+<h3><a class="anchor" aria-hidden="true" id="activateactor-action-options"></a><a href="#activateactor-action-options" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>activate(actor, action, ?options)</code></h3>
+<p><strong>Shorthand activation</strong>: <code>entity:beStatused(action, ?options)</code></p>
+<p>It is assumed that the <code>StatTypes.Status</code> stat has been set on the action as <code>action.status</code>.</p>
+<p>This function would traverse the added <code>status</code> chain. It would get the resistances, compare them to the levels statuses being applied and apply them only if needed by calling the <code>status:apply(entity, amount, option)</code> of the status effect (more on this and other methods later)</p>
+<h3><a class="anchor" aria-hidden="true" id="ticking-the-amounts"></a><a href="#ticking-the-amounts" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ticking the amounts</h3>
+<p>The decorator inserts a function into the <code>tick</code> chain to decrease the status amounts each beat.</p>
+<p>The status amounts are saved on the entity as <code>Entity.statuses</code> <code>Stats</code> object.</p>
+<p>The amounts applied are right now defined by the status effect itself, but may become parameters in the future.</p>
+<h3><a class="anchor" aria-hidden="true" id="setting-a-particular-status-amount-directly"></a><a href="#setting-a-particular-status-amount-directly" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setting a particular status amount directly</h3>
+<p>You may use the aforementioned status amounts object to reset status effects.</p>
+<p>For example, if you do <code>entity.statuses:set('stun', 0)</code>, the next time the tick event is triggered, the stun's tinker will be removed by means of a call to the <code>status:wearOff(entity, amount)</code> function (more later).</p>
+<p>However, if the stat were 0 to begin with and you set it to a positive amount, no status will be applied and so no tinker will be tinked, but its removal will take place once the amount ticks back to zero, which may produce some unexpected errors.</p>
+<h2><a class="anchor" aria-hidden="true" id="status"></a><a href="#status" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Status</h2>
+<p>Now let's turn our attention to how exactly the statuses work.</p>
+<h3><a class="anchor" aria-hidden="true" id="basic-example"></a><a href="#basic-example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic example</h3>
+<p>Assume we wanted to create out <code>stun</code> status effect. This is all the code needed to do it:</p>
+<pre><code class="hljs css language-lua"><span class="hljs-comment">-- create the tinker</span>
+<span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">forbidAction</span><span class="hljs-params">(event)</span></span>
+    event.propagate = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">local</span> tinker = Tinker({
+    { <span class="hljs-string">'checkAction'</span>, forbidAction }
+})
+
+<span class="hljs-comment">-- import the Status class</span>
+<span class="hljs-keyword">local</span> Status = <span class="hljs-built_in">require</span> <span class="hljs-string">'@status.status'</span>
+
+<span class="hljs-comment">-- create our stun status effect</span>
+<span class="hljs-keyword">local</span> stun = Status(tinker)
+
+<span class="hljs-comment">-- default amount of turns to wear off</span>
+stun.amount = <span class="hljs-number">2</span>
+
+<span class="hljs-comment">-- the overlay method.</span>
+<span class="hljs-comment">-- here, we go for RESET, since we don't want repetitive</span>
+<span class="hljs-comment">-- application of the stun status effect to stack the amount</span>
+<span class="hljs-comment">-- of stun on `entity.statuses`. For that use Overlay.ADD</span>
+<span class="hljs-keyword">local</span> Overlay = <span class="hljs-built_in">require</span> <span class="hljs-string">'@status.overlay'</span>
+stun.overlay = Overlay.RESET
+</code></pre>
+<p>There isn't a lot going on under the hood. When our <code>stun</code> status effect is applied, the tinker is tinked, and once it wears off, the tinker is untinked.</p>
+<p>A stat tinker, store tinker or ref tinker may also be used instead of the normal tinker.</p>
+<p>You might have noticed that we got the new status by instantiating it, using the <code>Status</code> contructor (factory). That is right, the statuses are not classes, they are just instances of the <code>Status</code> class. You'll have to keep that in mind while using more advanced techniques.</p>
+<h3><a class="anchor" aria-hidden="true" id="overridable-methods"></a><a href="#overridable-methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overridable methods</h3>
+<p>To achieve a more sophisticated behavior, make a custom subclass of <code>Status</code> and override its methods.</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> Sample = class(<span class="hljs-string">'SampleStatus'</span>, Status)
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:__construct</span><span class="hljs-params">(tinker, someParam)</span></span>
+    self.someParam = someParam
+
+    Status.__construct(self, tinker) <span class="hljs-comment">-- this sets up the tinker</span>
+    self.tinker = tinker <span class="hljs-comment">-- you could use this instead, but ^ is more consistent</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">-- this method has been mentioned above</span>
+<span class="hljs-comment">-- it is called once the status is first applied, that is, </span>
+<span class="hljs-comment">-- the with the amount being 0 before</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:apply</span><span class="hljs-params">(entity, amount, options)</span></span>
+    <span class="hljs-comment">-- the default method is to tink the tinker</span>
+    <span class="hljs-comment">-- let's say we want to print something before doing it</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">'Before tinking'</span>)
+    <span class="hljs-comment">-- now tink, using the superclass</span>
+    Status.apply(self, entity)
+    <span class="hljs-comment">-- or do it manually</span>
+    self.tinker:tink(entity)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">-- this one is called when the same effect is applied while</span>
+<span class="hljs-comment">-- its amount on entity.statuses isn't 0</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:reapply</span><span class="hljs-params">(entity, amount, options)</span></span>
+    printf(<span class="hljs-string">'The new amount: %i'</span>, amount)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">-- called at the time of tick when the amount reaches 0</span>
+<span class="hljs-comment">-- the default behavior is to untink the tinker</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:wearOff</span><span class="hljs-params">(entity)</span></span>
+    <span class="hljs-comment">-- let's say we e.g. don't want to untink</span>
+    <span class="hljs-comment">-- this is why we must override this and leave it blank</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">-- this one is experimental. It could be removed soon.</span>
+<span class="hljs-comment">-- This one is called before the entity does the action, in</span>
+<span class="hljs-comment">-- the `checkAction` chain (HIGHEST priority rank).</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:free</span><span class="hljs-params">(entity)</span></span>
+    <span class="hljs-comment">-- let's say we want to untink here</span>
+    self.tinker:untink(entity)
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>Now you may create instances of this new subclass to get status effects with a different behavior.</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> sampleStatus = Sample(someTinker, someParam)
+</code></pre>
+<p>The given methods are all the methods of a status effect ever called by extraneous code.</p>
+<h3><a class="anchor" aria-hidden="true" id="useful-predefined-status-subclasses"></a><a href="#useful-predefined-status-subclasses" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Useful predefined <code>Status</code> Subclasses</h3>
+<p>There are a couple of useful <code>Status</code> subclasses that I have defined.</p>
+<h4><a class="anchor" aria-hidden="true" id="optionstatus"></a><a href="#optionstatus" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>OptionStatus</code></h4>
+<p>This tinker relies on the assumption that you are using a <code>StoreTinker</code>. Here is its entire source code. Pretty self-explanatory:</p>
+<pre><code class="hljs css language-lua"><span class="hljs-keyword">local</span> Status = <span class="hljs-built_in">require</span> <span class="hljs-string">'@status.status'</span>
+
+<span class="hljs-comment">-- Options are an object with data.</span>
+<span class="hljs-comment">-- this status saves those options when an effect is applied</span>
+<span class="hljs-comment">-- and deletes them once it is removed.</span>
+
+<span class="hljs-keyword">local</span> OptionStatus = class(<span class="hljs-string">'OptionStatus'</span>, Status)
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">OptionStatus:apply</span><span class="hljs-params">(entity, amount, options)</span></span>
+    self.tinker:setStore(entity, options)
+    self.tinker:tink(entity)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">OptionStatus:wearOff</span><span class="hljs-params">(entity, amount)</span></span>
+    self.tinker:removeStore(entity)
+    self.tinker:untink(entity)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">return</span> OptionStatus
+</code></pre>
+<p>So basically the options that were passed to the status effect can now be accessed from the tinker's handlers. More info on <a href="/Dungeon-Hopper-Docs/docs/tinkers">StoreTinkers</a>.</p>
+<h4><a class="anchor" aria-hidden="true" id="flavorstatus"></a><a href="#flavorstatus" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>FlavorStatus</code></h4>
+<p>This is actually a subclass of the previous subclass, the <code>OptionStatus</code>.</p>
+<p>By definition, a <code>status flavor</code> is a tinker component. It must include the rank or a priority number with the handler. Basically, the component(s) will be tinked once the effect is applied (<code>apply()</code>) and untinked once removed (<code>wearOff()</code>).</p>
+<p>The flavor is expected to be passed with the options object, either as <code>options.flavor</code> if you're using a single component or <code>options.flavors</code> if you're using several ones.</p>
+<p>It is assumed that you're using a <code>StoreTinker</code>.</p>
+<h2><a class="anchor" aria-hidden="true" id="standart-ones"></a><a href="#standart-ones" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Standart ones</h2>
+<p>There are no predefined status effects in the core game logic. I have yet defined 3 in the <code>test</code> mod. More on this, mods and their content in designated future articles.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/Dungeon-Hopper-Docs/docs/tinkers"><span class="arrow-prev">← </span><span>Tinkers</span></a><a class="docs-next button" href="/Dungeon-Hopper-Docs/docs/items"><span>Next</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#example">Example</a></li><li><a href="#statused-decorator">Statused Decorator</a><ul class="toc-headings"><li><a href="#overview">Overview</a></li><li><a href="#the-stats-associated-with-statuses">The stats associated with statuses</a></li><li><a href="#activateactor-action-options"><code>activate(actor, action, ?options)</code></a></li><li><a href="#ticking-the-amounts">Ticking the amounts</a></li><li><a href="#setting-a-particular-status-amount-directly">Setting a particular status amount directly</a></li></ul></li><li><a href="#status">Status</a><ul class="toc-headings"><li><a href="#basic-example">Basic example</a></li><li><a href="#overridable-methods">Overridable methods</a></li><li><a href="#useful-predefined-status-subclasses">Useful predefined <code>Status</code> Subclasses</a></li></ul></li><li><a href="#standart-ones">Standart ones</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/Dungeon-Hopper-Docs/" class="nav-home"><img src="/Dungeon-Hopper-Docs/img/favicon.ico" alt="Dungeon Hopper" width="66" height="58"/></a><div><h5>Docs</h5><a href="/Dungeon-Hopper-Docs/docs/en/start.html">Getting Started</a></div><div><h5>Community</h5><a href="/Dungeon-Hopper-Docs/en/users.html">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/Dungeon-Hopper-Docs/blog">Blog</a><a href="https://github.com/AntonC9018/Dungeon-Hopper">GitHub Repo</a><a class="github-button" href="https://github.com/AntonC9018/Dungeon-Hopper" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/Dungeon-Hopper-Docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Your Name or Your Company Name</section></footer></div></body></html>
