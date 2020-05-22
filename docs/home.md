@@ -1,5 +1,5 @@
 ---
-id: home
+id: start
 title: What is this?
 ---
 
