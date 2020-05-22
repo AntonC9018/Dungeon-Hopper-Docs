@@ -201,3 +201,4 @@ local InfRecord = require '@items.pool.infinite.record'
 
 ### Adding new root pools with the `Pools` API
 
+This API is not yet complete.

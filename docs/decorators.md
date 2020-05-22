@@ -121,15 +121,27 @@ This decorator enables the entity to take normal hits.
 
 | Added chain | Automatically added handlers | Description |
 |-------------|------------------------------| ----------- |
-| `defence`   | Reduction by base armor      | This chain is traversed when your entity is about to take damage. These methods mild or amplify effects of the attack. |
+| `defence`   | `setAttackRes` `resistSource` `armor`      | This chain is traversed when your entity is about to take damage. These methods mild or amplify effects of the attack. |
 | `beHit`     | `takeHit`, `die`             | Handlers of this chain are traversed after a hit has been assured to come through by the `defence` chain.  |
 | `attackableness` | | |
 
-`takeHit` does damage to you (without applying status effects and pushing, see `Pushable` and `Statused` for that). 
-> `Entity.takeHit()` is the shorthand for `Entity.decorators.WithHP.activate()` 
+#### Attack sources
 
-`die` checks if the health is 0 and calls the `Entity.die()` if it is.
-> `Entity.die()` is the shorthand for `Entity.decorators.Killable.activate()`
+Each attack effect specifies a source. Any entity can do damage from only one source. The source is a string.
+
+Every entity decorated with `DynamicStats` has resistance to particular attack sources. The `resistSource()` handler checks if the level of resistance to the particular attack source is high enough (equal or more than the resistance level) to stop the attack. If it is, the event propagation is stopped. 
+
+There is also the `pierce` stat, which applies to all attack sources. This stat is checked in the `armor()` handler. If the level of this stat on the attack effect is less or equal to the pierce protection level, the damage is set to 0.
+
+The armor reduces the damage up to point of `minDamage`.
+
+#### Actually being hit
+
+`takeHit` does damage to you (without applying status effects and pushing, see `Pushable` and `Statused` for that). 
+> `Entity:takeHit()` is the shorthand for `Entity.decorators.WithHP:activate()` 
+
+`die` checks if the health is 0 and calls the `Entity:die()` if it is.
+> `Entity:die()` is the shorthand for `Entity.decorators.Killable:activate()`
 
 
 **Shorthand activation**: `Entity:beAttacked(action)`
