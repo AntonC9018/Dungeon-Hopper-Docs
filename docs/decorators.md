@@ -257,7 +257,7 @@ Makes the entity vulnerable to status effects. Status effects are being frozen, 
 | `tick`         | `tick`                       | decreases all statuses |
 | `checkAction`  | `free`                       | calls `free()` on statuses |
 
-You may optionally pass a configuration parameter to the activation. See [stats](stats.md). 
+You may optionally pass a configuration parameter to the activation. See [status effects](status.md). 
 
 **Shorthand activation**: `Entity:beStatused(action)`
 

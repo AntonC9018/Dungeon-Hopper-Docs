@@ -22,7 +22,8 @@
         "items",
         "weapon",
         "pools",
-        "generation"
+        "generation",
+        "mods"
     ]
   }
 }

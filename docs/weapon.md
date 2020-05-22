@@ -97,3 +97,35 @@ This function returns the list of targets for the current actor and action. Targ
 | `attackableness` | Attackableness: NO, YES, IF_CLOSE, SKIP | returned by `Entity:getAttackableness(attacker, action)` on the targeted entity |
 
 In case no targets have been found, it returns an empty list.
+
+
+## Creating a weapon
+
+`Weapon` is a subclass of `Item`. Here is all the code needed to create a spear:
+
+```lua
+local Weapon = require '@items.weapons.weapon'
+local Pattern = require '@items.weapons.pattern'
+
+local pattern = Pattern()
+pattern:add( Vec(1, 0), Vec(1, 0), false )
+pattern:add( Vec(2, 0), Vec(1, 0), true  )
+
+ -- the constructor is the same as that of Item
+ -- so you may optionally pass a tinker here
+local spear = Weapon() -- Weapon(myTinker)
+
+-- set the pattern
+spear.pattern = pattern
+
+-- if you have custom chains, or a custom check
+-- just set them here
+-- spear.chain = myChain
+-- spear.check = myCheck
+
+-- if you are willing to use the `hitAll` chain
+local hitAll = require '@items.weapons.chains.hitall'
+spear.chain = hitAll.chain
+spear.check = hitAll.check
+```
+

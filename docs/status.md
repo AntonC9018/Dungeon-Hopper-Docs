@@ -64,6 +64,11 @@ For example, if you do `entity.statuses:set('stun', 0)`, the next time the tick 
 
 However, if the stat were 0 to begin with and you set it to a positive amount, no status will be applied and so no tinker will be tinked, but its removal will take place once the amount ticks back to zero, which may produce some unexpected errors.
 
+### When are status effects applied?
+
+By default, status effects are applied to all targets upon attacking. So if you were to set your player's `status.stun` stat to e.g. 1 (so that it is greater than or equal to the default resistance level), and assuming the `stun` status effect has been registered, your player would stun enemies by attacking them, given they are decorated with the `Statused` decorator.  
+
+It may also be applied directly by calling `entity:beStatused(action, options)` on the given entity.
 
 ## Status
 
@@ -209,4 +214,4 @@ It is assumed that you're using a `StoreTinker`.
 
 ## Standart ones
 
-There are no predefined status effects in the core game logic. I have yet defined 3 in the `test` mod. More on this, mods and their content in designated future articles.
+There are no predefined status effects in the core game logic. I have yet defined 3 in the `test` mod. More on this, mods and their content in designated future articles. You can find the information on how to register your status effects in there too. 
