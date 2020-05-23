@@ -13,7 +13,7 @@ The game pretty much follows the **MVVM** (Model - View - ViewModel) pattern. Th
 
 The existence of this sort of paradigm allows us to easily switch the underlying engine if needed, as long as it supports lua as its scripting language.
 
-As the graphics improve over time, its API will be documented as well.
+As the graphics improves over time, its API will be documented as well.
 
 ## The weird imports
 

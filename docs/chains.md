@@ -103,10 +103,7 @@ local SChain = require 'lib.chains.schain'
 Same goes for *Chain Template* and *Sorted Chain Template*.
 
 #### Ranks
-There are four predefined *ranks*: `HIGHEST`, `HIGH`, `MEDIUM`, `LOW`, `LOWEST`. To use the ranks enum, require it:
-```lua
-local Ranks = require 'lib.chains.ranks'
-```
+There are four predefined *ranks*: `HIGHEST`, `HIGH`, `MEDIUM`, `LOW`, `LOWEST`. The `Ranks` enum is available throughout the project.
 
 The handlers will be executed in order from highest to lowest.
 ```lua
@@ -132,11 +129,8 @@ chain:addHandler({ h2, Ranks.MEDIUM })
 ```
 
 #### Ranks to Numbers conversion
-Under the hood, ranks are mapped to priority *numbers*, which are plain integers. They are stored in the `Numbers.rankMap` array, and stuff like this is also possible:
+Under the hood, ranks are mapped to priority *numbers*, which are plain integers. They are stored in the `Numbers.rankMap` array. The `Numbers` enum is available throught the project. As a result, stuff like this is also possible:
 ```lua
-local Numbers = require 'lib.chains.numbers'
-local Ranks = require 'lib.chains.ranks'
-
 chain:addHandler({ h1, Ranks.MEDIUM })
 chain:addHandler({ h2, Numbers.rankMap[Ranks.MEDIUM] + 1 })
 -- h2 will be executed just before h1
@@ -165,7 +159,7 @@ anotherChain:addHandler({ h6, Ranks.LOW }) -- maps to 200000
 
 > NOTE: The priority numbers of a chain instance are not restored once a handler is removed.
 
-Techinically, you may use floats, but you are recommended to use unsigned integers. Also, do not use numbers from 1 to 5 for priority numbers as those are processed as indicating ranks instead.
+Technically, you may use floats, but you are recommended to use unsigned integers. Also, do not use numbers from 1 to 5 for priority numbers as those are processed as indicating ranks instead.
 
 #### Why is it useful?
 
@@ -182,6 +176,8 @@ Chain templates offer a way of planning out a standart structure of a set of cha
 ### Example
 
 ```lua
+local ChainTemplate = require 'lib.chains.chaintemplate'
+
 local template = ChainTemplate() 
 
 local function handler00(event) end

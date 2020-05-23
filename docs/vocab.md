@@ -27,13 +27,13 @@ And others. Entities are given these properties by means of *decoration*. See [D
 
 ## Stats
 
-`Stats` is a wrapped string-integer dictionary. The `Stats` wrapper class has the following methods: set, get, setIfHigher, mingle, clone, decrement.
+`Stats` is a wrapped string-integer (or even string-anything) dictionary.
 
 
 ## Modifiers
 
 A `Modifier` is an object, the exact type of which is specified by objects that would use it. 
-The most relevant place where `Modifiers` are used is the table `Entity.baseModifiers`, that has fields for attack, armor, push, status and possibly resistances (not yet implemented fully). Secondly, `Modifiers` are used and, in fact, defined by the `DynamicStats` decorator. It lets one get or modify a specific stat dynamically. More on this decorator in the [Decorators section](decorators.md).
+The most relevant place where `Modifiers` are used is the table `Entity.baseModifiers`, that has fields for attack, armor, push, status and resistances. It may also include any custom fields used exclusively by the entity type within its logic. Secondly, `Modifiers` are used and, in fact, defined by the `DynamicStats` decorator. It lets one get or modify a specific stat dynamically. It also allows adding new stats. More on this [here](dynamicstats.md).
 
 
 ## Effects

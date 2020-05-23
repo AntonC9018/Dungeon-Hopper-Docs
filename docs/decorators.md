@@ -8,12 +8,10 @@ title: Decorators
 
 Decorators are used extensively throughout the project. They act pretty much like individual components that are used to augment your entity **classes**. They are **not dynamic**, that is, they *cannot* be added on already instantiated objects. Nevertheless, the chains they add *are* dynamic and can be modified at any time.
 
-### Some new terminology on methods:
+### Method name conventions
 
 1. `be<Something>` methods refer to applying that something on the entity after a series of checks that are able to interfere with that, not allowing the effects. For example, `beAttacked` does the attack after going through a series of handlers, e.g. blocking some of the damage, or stopping the event from propagating completely, e.g. by being invincible. 
-2. `do<Something>` methods refer to applying the action on a previously unknown object. For example, `doAttack` method on `World` calculates which entity is going to be targeted and calls `beAttacked` on those entities.
-3. `apply<Something>` methods refer to those methods which call `do<Something>` on `World`.
-4. `execute<Something>` is the same as the first one, except it is that object that does the action, that is, it is not the subject of the action. Foe example, `executeAttack` would make the entity try to do an attack.
+2. `execute<Something>` is the same as the first one, except it is that object that does the action, that is, it is not the subject of the action. Foe example, `executeAttack` would make the entity try to do an attack.
 
 
 ### How to use the decorators
@@ -162,6 +160,12 @@ This decorator enables the entity to do normal hits.
 You may pass the list of entities you want to attack as a parameter to the activation. This would skip the process of getting targets.
 
 **Shorthand activation**: `Entity:executeAttack(action)`
+
+#### The `do` Interactors
+
+These are loosely speaking methods that affect one or more entities in the world. The ones we are concerned with here are the `do<Something>` interactors. `do<Something>` methods refer to applying the action on a previously unknown object. For example, the `doAttack` interactor calculates which entity is going to be targeted and calls `beAttacked` on those entities.
+
+The `apply<Something>` handlers added by this decorator just call these interactors.
 
 ### `Interacting`
 
