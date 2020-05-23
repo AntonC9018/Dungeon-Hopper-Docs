@@ -31,7 +31,7 @@ pattern:add( Vec(1, 0), Vec(1, 0), false ) -- { pos = (1, 0), dir = (1, 0), reac
 pattern:add( Vec(2, 0), Vec(1, 0), true  ) -- { pos = (2, 0), dir = (1, 0), reach = true  }
 ```
 
-Which represents the following attack pattern. Note that in the case when the first spot is blocked, the second is not targeted, since reach of the second piece is true.
+This represents the following attack pattern. Note that in the case when the first spot is blocked, the second is not targeted, since reach of the second piece is true.
 
 ![Spear attack pattern](assets/pattern_example_1.png)
 
@@ -46,7 +46,7 @@ pattern:add( Vec(1, 2),  Vec(0, 1),  { 2 } )
 pattern:add( Vec(1, -2), Vec(0, -1), { 3 } )
 ```
 
-Which happens to be the pattern of a whip in the original Necrodancer.
+This happens to be the pattern of a whip in the original Necrodancer.
 
 In case you are using the `general weapon (algorithm) chain`, the pieces of your pattern will be tested in order and only the first match will make it into the targets list. 
 

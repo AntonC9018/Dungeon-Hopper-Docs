@@ -23,7 +23,7 @@ local Item = require '@items.item'
 
 -- define a tinker
 local myTinker = Tinker({
-    { 'attack', function(event) print('Attack called!') }
+    { 'attack', function(event) print('Attack called!') end }
 })
 
 -- create the item
@@ -42,7 +42,7 @@ Called when the item is equipped by an entity. `Equipped` essentially means that
 
 ### `item:beUnequipped(entity)`
 
-Called when either a inventory slot overflow takes place (e.g. when you pick up the second weapon, the first gets unequipped) or when the item is unequipped deliberately through some other logic. This function would both untink the tinker and drop the unequipped item in the world.
+Called when either an inventory slot overflow takes place (e.g. when you pick up the second weapon, the first gets unequipped) or when the item is unequipped deliberately through some other logic. This function would both untink the tinker and drop the unequipped item in the world.
 
 ### `item:beDestroyed(entity)`
 

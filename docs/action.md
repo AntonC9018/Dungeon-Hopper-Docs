@@ -63,7 +63,7 @@ The difference between these two is that the `GeneralAlgo` tests out a couple of
 
 As a result, **these algorithms support just one action of one type at a time**. That is, with the `GeneralAlgo` it is impossible to program an enemy that e.g. would attack to the left, while spitting out a projectile to the right (it is possible, but hacky), which is also true for the `SimpleAlgo`.
 
-Action chains of both enemies and players typically have a verification stage before deciding on which action to start. These are set on the `get` (or `check`) chain from the corresponding decorator. These chain are incorporated in the `chainTemplate` directly on the entity class. For example, for an attack, the decorator would be `Attacking` and the chain would be named `getAttack`. So you would do:
+Action chains of both enemies and players typically have a verification stage before deciding on which action to start. These are set on the `get` (or `check`) chain from the corresponding decorator. These chains are incorporated in the `chainTemplate` directly on the entity class. For example, for an attack, the decorator would be `Attacking` and the chain would be named `getAttack`. So you would do:
 
 ```lua
 MyEntity.chainTemplate:addHandler('getAttack', myHandler)
